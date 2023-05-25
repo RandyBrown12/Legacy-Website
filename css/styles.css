@@ -15,11 +15,23 @@
     /* COLORS */
     --BG-COLOR: yellow;
     --HEADER-COLOR: black;
+    --HOVER-COLOR: rgb(160, 151, 151);
+    --LG-FIRST-COLOR: rgb(231, 56, 39);
+    --LG-SECOND-COLOR: rgb(248, 123, 50);
+
+    /* BORDERS */
+    --BORDER-SIZE: 3px;
+    --BORDER-STYLE: solid;
+    --BORDER-COLOR: black;
 }
 
 /* Block */
 html {
     scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(45deg, var(--LG-FIRST-COLOR), var(--LG-SECOND-COLOR));
 }
 
 /* || HEADER */
@@ -32,7 +44,8 @@ html {
     font-size: var(--FONT-SIZE);
     width: 100%;
     justify-content: space-between;
-    border: 3px solid black;
+    border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
+    font-weight: bolder;
 }
 
 .header__name {
@@ -52,6 +65,20 @@ html {
     color: var(--HEADER-COLOR);
 }
 
-a:any-link {
+/* LINKS */
+a:any-link, a:visited {
     text-decoration: none;
+}
+
+a:hover {
+    color: var(--HOVER-COLOR);
+}
+/* BODY */
+
+
+
+/* || UTILITY */
+.offscreen {
+    position: absolute;
+    left: -10000px;
 }
