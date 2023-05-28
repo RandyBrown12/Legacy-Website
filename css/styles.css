@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Playfair+Display+SC');
 
 * {
     margin: 0;
@@ -9,13 +9,14 @@
 /* || VARIABLES || */
 :root {
     /* FONTS */
-    --FONT-FAMILY: 'Merriweather', serif;
+    --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
+    --BODY-FONT-FAMILY: 'Calibri', sans-serif;
     --FONT-SIZE: 1.8rem;
 
     /* COLORS */
-    --BG-COLOR: yellow;
-    --HEADER-COLOR: black;
-    --HOVER-COLOR: rgb(160, 151, 151);
+    --BG-COLOR: #2CC437;
+    --HEADER-FONT-COLOR: black;
+    --HOVER-COLOR: #3c3939;
     --LG-FIRST-COLOR: rgb(231, 56, 39);
     --LG-SECOND-COLOR: rgb(248, 123, 50);
 
@@ -36,33 +37,39 @@ body {
 
 /* || HEADER */
 .header {
-    position: sticky;
-    display: flex;
-    font-family: var(--FONT-FAMILY);
+    align-items: center;
     background-color: var(--BG-COLOR);
-    padding: 1.0em;
-    font-size: var(--FONT-SIZE);
-    width: 100%;
-    justify-content: space-between;
     border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
+    display: flex;
+    font-family: var(--HEADER-FONT-FAMILY);
+    font-size: var(--FONT-SIZE); /* Fix Collison with words at 980 width */
     font-weight: bolder;
-}
-
-.header__name {
-    display: flex;
-}
-
-.header__div {
-    display: flex;
     justify-content: space-between;
+    letter-spacing: 0.03em;
+    padding: 1.0em;
+    position: sticky;
+    width: 100%; 
+}
+
+.header__icon {
+    margin: -0.7em;
+    gap: 0.4em;
+}
+
+.header__left-side {
+    display: flex;
+    align-items: center;
+}
+
+.header__right-side {
+    display: flex;
     gap: 2.2em;
+    justify-content: flex-end;
 }
 
 .header__link {
-    display: flex;
-    justify-content: flex-end;
     gap: 1.5rem;
-    color: var(--HEADER-COLOR);
+    color: var(--HEADER-FONT-COLOR);
 }
 
 /* LINKS */
@@ -73,9 +80,18 @@ a:any-link, a:visited {
 a:hover {
     color: var(--HOVER-COLOR);
 }
+
 /* BODY */
+main {
+    font-family: var(--BODY-FONT-FAMILY);
+}
 
-
+/* FORM */
+.calculateForm {
+    border-radius: 15px;
+    margin: 0.5em;
+    width: 100%;
+}
 
 /* || UTILITY */
 .offscreen {
