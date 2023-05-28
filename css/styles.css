@@ -72,6 +72,9 @@ body {
     color: var(--HEADER-FONT-COLOR);
 }
 
+.header__ul {
+    list-style-type: none;
+}
 /* LINKS */
 a:any-link, a:visited {
     text-decoration: none;
@@ -88,13 +91,28 @@ main {
 
 /* FORM */
 .calculateForm {
+    margin-left: auto;
+    margin-right: auto;
+    width: 38%;
+    border: 5px solid black;
     border-radius: 15px;
-    margin: 0.5em;
-    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.calculateForm__button {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
 }
 
 /* || UTILITY */
 .offscreen {
     position: absolute;
     left: -10000px;
+}
+
+.center {
+    margin: auto;
+    width: 50%;
+    white-space: nowrap;
 }

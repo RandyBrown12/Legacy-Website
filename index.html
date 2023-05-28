@@ -18,16 +18,24 @@
                 <figcaption class="offscreen">Money Icon</figcaption> 
                 <p>Investment Calculator</p>
             </figure>
-            <div class="header__right-side">
-                <a class="header__link" href="about.html">About Me</a>
-                <a class="header__link" href="project.html">Other Projects</a>
-            </div>
+            <ul class="header__ul header__right-side">
+                <li><a class="header__link" href="about.html">About Me</a></li>
+                <li><a class="header__link" href="project.html">Other Projects</a></li>
+            </ul>
         </header>
     </nav>
     <main>
-        <h1>Calculate your take home pay for the expected job</h1>
-        <form id="calculateForm">
-            <button id="compute" name="compute" onclick="test()">Calculate Pay</button>
+        <p>This handy dandy Investment tool is used to create the expected pay after taxes</p>
+        <h2 class="center">Calculate your take home pay for the expected job</h2>
+        <form class="calculateForm">
+            <label for="text" class="center">Hours planning to Work: </label>
+            <input type="text" class="center" placeholder="Ex:15">
+            <label for="text" class="center">Expected Salary before taxes: </label>
+            <input type="text" class="center" placeholder="Ex:60000">
+            <article class="center">
+                <button id="compute" class="calculateForm__button" name="compute" onclick="test()">Calculate Pay</button>
+                <button id="reset" class="calculateForm__button" name="reset" onclick="testTwo()">Reset</button>
+            </article>
         </form>
 
     </main>
