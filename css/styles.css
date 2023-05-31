@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Playfair+Display+SC');
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300&family=Playfair+Display+SC&display=swap');
 
 * {
     margin: 0;
@@ -10,20 +10,20 @@
 :root {
     /* FONTS */
     --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
-    --BODY-FONT-FAMILY: 'Calibri', sans-serif;
+    --BODY-FONT-FAMILY: 'Mukta', sans-serif;
     --FONT-SIZE: 1.8rem;
 
     /* COLORS */
-    --BG-COLOR: #2CC437;
+    --HEADER-COLOR: #2CC437;
     --HEADER-FONT-COLOR: black;
     --HOVER-COLOR: #3c3939;
-    --LG-FIRST-COLOR: rgb(231, 56, 39);
-    --LG-SECOND-COLOR: rgb(248, 123, 50);
+    --BODY-COLOR: #407899;
 
     /* BORDERS */
     --BORDER-SIZE: 3px;
     --BORDER-STYLE: solid;
     --BORDER-COLOR: black;
+    --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
 }
 
 /* Block */
@@ -32,13 +32,12 @@ html {
 }
 
 body {
-    background: linear-gradient(45deg, var(--LG-FIRST-COLOR), var(--LG-SECOND-COLOR));
+    background: var(--BODY-COLOR);
 }
-
 /* || HEADER */
 .header {
     align-items: center;
-    background-color: var(--BG-COLOR);
+    background-color: var(--HEADER-COLOR);
     border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
     display: flex;
     font-family: var(--HEADER-FONT-FAMILY);
@@ -76,11 +75,11 @@ body {
     list-style-type: none;
 }
 /* LINKS */
-a:any-link, a:visited {
+.header__link:any-link, .header__link:visited {
     text-decoration: none;
 }
 
-a:hover {
+.header__link:hover {
     color: var(--HOVER-COLOR);
 }
 
@@ -94,10 +93,11 @@ main {
     margin-left: auto;
     margin-right: auto;
     width: 38%;
-    border: 5px solid black;
+    border: var(--FORM-BORDER);
     border-radius: 15px;
     display: flex;
     flex-direction: column;
+    margin-bottom: 0.3em;
 }
 
 .calculateForm__button {
@@ -115,10 +115,4 @@ main {
     margin: auto;
     width: 50%;
     white-space: nowrap;
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
 }
