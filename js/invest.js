@@ -4,12 +4,15 @@ const computeButton = document.getElementById("compute");
 const resetButton = document.getElementById("reset");
 const taxRateOutput = document.getElementById("taxRate");
 const takeHomePayOutput = document.getElementById("takeHomePay");
-const conversionRatio = 12;
-var taxRate = 0;
-var grossIncome = 0;
+const conversionRatios = [["hour", 1], ["week", 168], ["month", 1], ["year", 1]];
+let taxRate = 0;
+let grossIncome = 0;
+
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", testTwo);
+
+//Note: First input is 40 hours per week.
 
 function takeHomePay() {
     grossIncome = 0;
@@ -35,8 +38,8 @@ function takeHomePay() {
     }
     grossIncome = salary;
     taxRate = getTaxRate(grossIncome);
-    taxRateOutput.textContent += " " + parseFloat(taxRate).toFixed(2)+"%";
-    takeHomePayOutput.textContent += " " + Math.round(grossIncome / conversionRatio) + "/month";
+    taxRateOutput.textContent += " " + (taxRate * 100) + "%";
+    takeHomePayOutput.textContent += " " + Math.round(grossIncome / 180) + "/month";
 }
 
 function testTwo() {
