@@ -7,14 +7,17 @@ const takeHomePayOutput = document.getElementById("takeHomePay");
 const optionBox = document.getElementById("timeConverter");
 //converted to years.
 const conversionRatios = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
+//Margin Tax Rate: $10,275 goes to 10%, $31500 goes to 12%, until it reaches a bracket.
+const federalYearlyRates = new Map([[0.10, 10275], [0.12, 41775], [0.22, 89075], [0.24, 170050], [0.32, 215950], [0.35, 539900], [0.37, 999999999]]);
+const stateYearlyRates = new Map([[0.0025, 1000], [0.0075, 2500], [0.0175, 3750], [0.0275, 4900], [0.0375, 7200], [0.0475, 999999999]]);
 let taxRate = 0;
 let grossIncome = 0;
 let conversionOption = "";
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
-resetButton.addEventListener("click", testTwo);
-
+resetButton.addEventListener("click", resetTextboxes);
+optionBox.addEventListener("change", selectedOption);
 //Note: First input is 40 hours per week.
 //Note 2: If in hours, convert hours to weeks otherwise convert [weeks,months,years] to years.
 //Test: $7.25 hr with 40 hrs/week should be 290 per week.
@@ -29,7 +32,7 @@ function takeHomePay() {
     let conversionOption = timeConverter.options[timeConverter.selectedIndex].text;
     try
     {
-        if(isNaN(workHours))
+        if(isNaN(workHours) && timeConverter.selectedIndex === 0)
         {
             throw "Please enter a number in the hours textbox!";
         }
@@ -37,8 +40,7 @@ function takeHomePay() {
         {
             throw "Please enter a number in the salary textbox!";
         }
-        salaryInput.value = "";
-        hoursInput.value = "";
+        resetTextboxes();
     } catch(e) {
         window.alert(e);
     }
@@ -47,28 +49,45 @@ function takeHomePay() {
         salary *= workHours;
         conversionOption = "Week";
     }
-    grossIncome = salary * conversionRatios.get(conversionOption);
-    taxRate = getTaxRate(grossIncome);
-    taxRateOutput.textContent += " " + (taxRate * 100) + "%";
+    salary *= conversionRatios.get(conversionOption)
+    grossIncome = getTaxRate(salary, "Federal");
+    taxRateOutput.textContent += getTaxRate(salary, "Federal") + "    " + getTaxRate(salary, "State");
     takeHomePayOutput.textContent += " " + Math.round(grossIncome / 12) + "/month";
 }
 
-function testTwo() {
-    salaryInput.value = "";
+function resetTextboxes() {
+    salaryInput.value = hoursInput.value = "";
 }
 
-function getTaxRate(useGrossIncome) {
-    if(useGrossIncome > 215950) {
-        return 0.35;
-    } else if(useGrossIncome > 170050) {
-        return 0.32;
-    } else if(useGrossIncome > 89075) {
-        return 0.24;
-    } else if(useGrossIncome > 41775) {
-        return 0.22;
-    } else if(useGrossIncome > 10275) {
-        return 0.12;
-    } else {
-        return 0;
+function selectedOption() {
+    if(timeConverter.selectedIndex !== 0) {
+        hoursInput.disabled = true;
+        hoursInput.value = hoursInput.placeholder = "";
+        return;
     }
+    hoursInput.disabled = false;
+    hoursInput.placeholder = "Ex: 15";
+}
+
+function getTaxRate(useGrossIncome, chosenTaxBracket) {
+    let prevMaxIncome = 0;
+    let federalTaxes = 0;
+    if(chosenTaxBracket === "Federal") {
+        chosenTaxBracket = federalYearlyRates.entries();
+    } else if(chosenTaxBracket === "State") {
+        chosenTaxBracket = stateYearlyRates.entries();
+    }
+    for([marginalTaxRate, maxIncome] of chosenTaxBracket)
+    {
+        if(useGrossIncome > maxIncome)
+        {
+            federalTaxes += marginalTaxRate * (maxIncome - prevMaxIncome);
+            prevMaxIncome = maxIncome;
+        } else {
+            federalTaxes += marginalTaxRate * (useGrossIncome - prevMaxIncome);
+            break;
+        }
+        console.log(federalTaxes);
+    }
+    return federalTaxes;
 }
