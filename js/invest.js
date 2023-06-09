@@ -9,7 +9,10 @@ const optionBox = document.getElementById("timeConverter");
 const conversionRatios = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
 //Margin Tax Rate: $10,275 goes to 10%, $31500 goes to 12%, until it reaches a bracket.
 const federalYearlyRates = [[0.10, 10275], [0.12, 41775], [0.22, 89075], [0.24, 170050], [0.32, 215950], [0.35, 539900], [0.37, 999999999]];
-const stateYearlyRates = [[0.0025, 1000], [0.0075, 2500], [0.0175, 3750], [0.0275, 4900], [0.0375, 7200], [0.0475, 999999999]];
+const stateYearlyRates = [[0, 0, 0], [6350, 0, 0.25], [7350, 2.50, 0.75], [8,850, 13.75, 1.75], [10100, 35.63, 2.75], [11250, 67.25, 3.75], [13550, 153.50, 4.75]];
+const fica = [[0.062, 147000],[0.0145, 0]];
+//1825 Semi-Monthly. Two Withholding
+//41.67 * 2
 let taxRate = 0;
 let grossIncome = 0;
 let conversionOption = "";
@@ -50,8 +53,8 @@ function takeHomePay() {
         conversionOption = "Week";
     }
     salary *= conversionRatios.get(conversionOption);
-    federalTaxedIncome = getTaxRate(salary, federalYearlyRates);
-    stateTaxedIncome = getTaxRate(salary, stateYearlyRates);
+    federalTaxedIncome = getFederalTaxRate(salary);
+    stateTaxedIncome = getStateTaxRate(salary);
     taxRateOutput.textContent += (federalTaxedIncome / salary).toFixed(2) + "    " + (stateTaxedIncome / salary).toFixed(2);
     takeHomePayOutput.textContent += " " + Math.round(salary / 12) + "/month";
 }
@@ -70,10 +73,10 @@ function selectedOption() {
     hoursInput.placeholder = "Ex: 15";
 }
 
-function getTaxRate(useGrossIncome, chosenTaxBracket) {
+function getFederalTaxRate(useGrossIncome) {
     let prevMaxIncome = 0;
     let federalTaxes = 0;
-    for([marginalTaxRate, maxIncome] of chosenTaxBracket)
+    for([marginalTaxRate, maxIncome] of federalYearlyRates)
     {
         if(useGrossIncome > maxIncome)
         {
@@ -83,8 +86,23 @@ function getTaxRate(useGrossIncome, chosenTaxBracket) {
             federalTaxes += marginalTaxRate * (useGrossIncome - prevMaxIncome);
             break;
         }
-        console.log(federalTaxes);
     }
-    console.log(federalTaxes);
+    return federalTaxes.toFixed(2);
+}
+
+function getStateTaxRate(useGrossIncome) {
+    let prevMaxIncome = 0;
+    let federalTaxes = 0;
+    for([marginalTaxRate, maxIncome] of stateYearlyRates)
+    {
+        if(useGrossIncome > maxIncome)
+        {
+            federalTaxes += marginalTaxRate * (maxIncome - prevMaxIncome);
+            prevMaxIncome = maxIncome;
+        } else {
+            federalTaxes += marginalTaxRate * (useGrossIncome - prevMaxIncome);
+            break;
+        }
+    }
     return federalTaxes.toFixed(2);
 }
