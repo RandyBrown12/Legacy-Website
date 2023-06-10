@@ -104,5 +104,5 @@ function getStateTaxRate(useGrossIncome) {
             break;
         }
     }
-    return federalTaxes.toFixed(2);
+    return stateTaxes.toFixed(2);
 }

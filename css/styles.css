@@ -11,7 +11,7 @@
     /* FONTS */
     --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
     --BODY-FONT-FAMILY: 'Mukta', sans-serif;
-    --FONT-SIZE: 1.8rem;
+    --FONT-SIZE: 2.5vw;
 
     /* COLORS */
     --HEADER-COLOR: #2CC437;
@@ -24,6 +24,9 @@
     --BORDER-STYLE: solid;
     --BORDER-COLOR: black;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
+
+    /* SIZE */
+    --FORM-WIDTH-SIZE: 50%;
 }
 
 /* Block */
@@ -92,12 +95,13 @@ main {
 .calculateForm {
     margin-left: auto;
     margin-right: auto;
-    width: 38%;
+    width: 90%;
     border: var(--FORM-BORDER);
-    border-radius: 15px;
+    border-radius: 15px; 
     display: flex;
     flex-direction: column;
     margin-bottom: 0.3em;
+    word-wrap: nowrap;
 }
 
 .calculateForm__button {
@@ -111,8 +115,24 @@ main {
     left: -10000px;
 }
 
+.textCenter {
+    text-align: center;
+}
+
 .center {
     margin: auto;
-    width: 50%;
-    white-space: nowrap;
+    width: var(--FORM-WIDTH-SIZE);
+}
+
+.spacing {
+    margin-bottom: 0.3em;
+    margin-top: 0.3em;
+}
+
+/* Media Query for small phone */
+@media screen and (min-width: 620px)
+{
+    .calculateForm {
+        width: 47%;
+    }
 }
