@@ -4,6 +4,7 @@ const computeButton = document.getElementById("compute");
 const resetButton = document.getElementById("reset");
 const federalTaxRateOutput = document.getElementById("federalTaxRate");
 const stateTaxRateOutput = document.getElementById("stateTaxRate");
+const ficaTaxRateOutput = document.getElementById("ficaTaxRate");
 const takeHomePayOutput = document.getElementById("takeHomePay");
 const optionBox = document.getElementById("timeConverter");
 //converted to years.
@@ -25,11 +26,12 @@ optionBox.addEventListener("change", selectedOption);
 //Test: $7.25 hr with 40 hrs/week should be 290 per week.
 //Test2: $290 week with 40 hrs/week should be 1256 per month.
 function takeHomePay() {
-    let taxRate = 0, grossIncome = 0, federalTaxedIncome = 0, stateTaxedIncome = 0;
+    let taxRate = 0, grossIncome = 0, federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0;
     let conversionOption = timeConverter.options[timeConverter.selectedIndex].text;
     federalTaxRateOutput.textContent = federalTaxRateOutput.textContent.substring(0, 19);
     stateTaxRateOutput.textContent = stateTaxRateOutput.textContent.substring(0, 17);
     takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 24);
+    ficaTaxRateOutput.textContent = ficaTaxRateOutput.textContent.substring(0, 23);
     let workHours = parseInt(hoursInput.value);
     let salary = parseFloat(salaryInput.value);
 
@@ -52,8 +54,10 @@ function takeHomePay() {
     federalYearlyRates[6][1] = stateYearlyRates[6][2] = salary;
     federalTaxedIncome = getFederalTaxRate(salary);
     stateTaxedIncome = getStateTaxRate(salary);
+    ficaTaxedIncome = getFicaTaxRate(salary);
     federalTaxRateOutput.textContent += " " + federalTaxedIncome;
     stateTaxRateOutput.textContent += " " + stateTaxedIncome;
+    ficaTaxRateOutput.textContent += " " + ficaTaxedIncome;
     takeHomePayOutput.textContent += " " + Math.round(salary / 12) + "/month";
 }
 
@@ -71,34 +75,43 @@ function selectedOption() {
     hoursInput.placeholder = "Ex: 15";
 }
 
-function getFederalTaxRate(useGrossIncome) {
+function getFederalTaxRate(grossIncome) {
     let prevMaxIncome = 0;
     let taxes = 0;
     for([marginalTaxRate, maxAllotedIncome] of federalYearlyRates)
     {
-        if(useGrossIncome > maxAllotedIncome)
+        if(grossIncome > maxAllotedIncome)
         {
             taxes += marginalTaxRate * (maxAllotedIncome - prevMaxIncome);
             prevMaxIncome = maxAllotedIncome;
         } else {
-            taxes += marginalTaxRate * (useGrossIncome - prevMaxIncome);
+            taxes += marginalTaxRate * (grossIncome - prevMaxIncome);
             break;
         }
     }
     return taxes.toFixed(2);
 }
 
-function getStateTaxRate(useGrossIncome) {
+function getStateTaxRate(grossIncome) {
     let prevMaxIncome = 0;
     let taxes = 0;
     for([additionalIncome, marginalTaxRate, maxAllotedIncome] of stateYearlyRates)
     {
-        if(useGrossIncome > maxAllotedIncome) 
+        if(grossIncome > maxAllotedIncome) 
         { 
             prevMaxIncome = maxAllotedIncome
             continue;
         }
-        taxes = additionalIncome + (marginalTaxRate * (useGrossIncome - prevMaxIncome));
+        taxes = additionalIncome + (marginalTaxRate * (grossIncome - prevMaxIncome));
     }
     return taxes.toFixed(2);
+}
+
+function getFicaTaxRate(grossIncome) {
+    let ficaTaxRate = 0.062;
+    let medicareTaxRate = [0.0145, 0.0235];
+    let totalTaxIncome = 0;
+    totalTaxIncome += (grossIncome > 160200 ? grossIncome : 160200) * 0.062;
+    totalTaxIncome += (grossIncome > 200000 ? medicareTaxRate[1] : medicareTaxRate[0]) * grossIncome;
+    return totalTaxIncome.toFixed(2);
 }
