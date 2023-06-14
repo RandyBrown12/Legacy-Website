@@ -2,6 +2,7 @@ const hoursInput = document.getElementById("hours");
 const salaryInput = document.getElementById("salary");
 const computeButton = document.getElementById("compute");
 const resetButton = document.getElementById("reset");
+const beforeTaxRateOutput = document.getElementById("beforeTaxPay");
 const federalTaxRateOutput = document.getElementById("federalTaxRate");
 const stateTaxRateOutput = document.getElementById("stateTaxRate");
 const ficaTaxRateOutput = document.getElementById("ficaTaxRate");
@@ -14,8 +15,6 @@ const conversionRatios = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year"
 const federalYearlyRates = [[0.10, 10275], [0.12, 41775], [0.22, 89075], [0.24, 170050], [0.32, 215950], [0.35, 539900], [0.37, Infinity]];
 const stateYearlyRates = [[0, 0, 6350], [0, 0.0025, 7350], [2.50, 0.0075, 8850], [13.75, 0.0175, 10100], [35.63, 0.0275, 11250], [67.25, 0.0375, 13550], [153.50, 0.0475, Infinity]];
 const fica = [[0.062, 147000],[0.0145, 0]];
-//1825 Semi-Monthly. Two Withholding
-//41.67 * 2
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
@@ -28,6 +27,7 @@ optionBox.addEventListener("change", selectedOption);
 function takeHomePay() {
     let taxRate = 0, grossIncome = 0, federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0;
     let conversionOption = timeConverter.options[timeConverter.selectedIndex].text;
+    beforeTaxRateOutput.textContent = beforeTaxRateOutput.textContent.substring(0, 29);
     federalTaxRateOutput.textContent = federalTaxRateOutput.textContent.substring(0, 19);
     stateTaxRateOutput.textContent = stateTaxRateOutput.textContent.substring(0, 17);
     takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 24);
@@ -51,13 +51,16 @@ function takeHomePay() {
         conversionOption = "Week";
     }
     salary *= conversionRatios.get(conversionOption);
+    beforeTaxRateOutput.textContent += " " + Math.round(salary / 12) + "/month";
     federalYearlyRates[6][1] = stateYearlyRates[6][2] = salary;
     federalTaxedIncome = getFederalTaxRate(salary);
     stateTaxedIncome = getStateTaxRate(salary);
     ficaTaxedIncome = getFicaTaxRate(salary);
-    federalTaxRateOutput.textContent += " " + federalTaxedIncome;
-    stateTaxRateOutput.textContent += " " + stateTaxedIncome;
-    ficaTaxRateOutput.textContent += " " + ficaTaxedIncome;
+    federalTaxRateOutput.textContent += " " + federalTaxedIncome + "   " + (federalTaxedIncome / salary).toFixed(4);
+    stateTaxRateOutput.textContent += " " + stateTaxedIncome + "   " +(stateTaxedIncome / salary).toFixed(4);
+    ficaTaxRateOutput.textContent += " " + ficaTaxedIncome + "   " + (ficaTaxedIncome / salary).toFixed(4);
+    console.log(federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
+    salary -= federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome;
     takeHomePayOutput.textContent += " " + Math.round(salary / 12) + "/month";
 }
 
@@ -85,11 +88,13 @@ function getFederalTaxRate(grossIncome) {
             taxes += marginalTaxRate * (maxAllotedIncome - prevMaxIncome);
             prevMaxIncome = maxAllotedIncome;
         } else {
+            console.log(grossIncome - prevMaxIncome);
             taxes += marginalTaxRate * (grossIncome - prevMaxIncome);
             break;
         }
+        console.log(taxes)
     }
-    return taxes.toFixed(2);
+    return parseFloat(taxes.toFixed(2));
 }
 
 function getStateTaxRate(grossIncome) {
@@ -104,14 +109,14 @@ function getStateTaxRate(grossIncome) {
         }
         taxes = additionalIncome + (marginalTaxRate * (grossIncome - prevMaxIncome));
     }
-    return taxes.toFixed(2);
+    return parseFloat(taxes.toFixed(2));
 }
 
 function getFicaTaxRate(grossIncome) {
     let ficaTaxRate = 0.062;
     let medicareTaxRate = [0.0145, 0.0235];
     let totalTaxIncome = 0;
-    totalTaxIncome += (grossIncome > 160200 ? grossIncome : 160200) * 0.062;
+    totalTaxIncome += (grossIncome > 160200 ? 160200 : grossIncome)  * ficaTaxRate;
     totalTaxIncome += (grossIncome > 200000 ? medicareTaxRate[1] : medicareTaxRate[0]) * grossIncome;
-    return totalTaxIncome.toFixed(2);
+    return parseFloat(totalTaxIncome.toFixed(2));
 }
