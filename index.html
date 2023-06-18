@@ -26,12 +26,12 @@
     </nav>
     <main>
         <h2 class="textCenter spacing">Calculate your take home pay for the expected job</h2>
-        <form class="calculateForm">
+        <form class="form__bg calculateForm">
             <label for="text" class="textCenter wrap">Hours planning to Work per week: </label>
-            <input type="text" id="hours" class="center" maxlength="3" placeholder="Ex: 15">
+            <input type="text" id="hours" class="center removeHover form__input" maxlength="3" placeholder="Ex: 15">
             <label for="text" class="textCenter wrap">Expected Salary in years before taxes: </label>
             <div class="center">
-                <input type="text" id="salary" class="center" maxlength="9" placeholder="Ex: 60000">
+                <input type="text" id="salary" class="center removeHover form__input" maxlength="9" placeholder="Ex: 60000">
                 <select name="timeConverter" id="timeConverter">
                     <option value="hour">Hour</option>
                     <option value="week">Week</option>
@@ -45,15 +45,17 @@
                 <button type="button" id="reset" class="calculateForm__button" name="reset">Reset</button>
             </article>
         </form>
-        <form class="calculateForm">
+        <form id="afterCalculation" class="form__bg calculateForm">
             <label id="beforeTaxPay" for="text" class="center">Salary Before Tax per month: </label>
             <label id="federalTaxRate" for="text" class="center">Federal Tax Rate: </label>
             <label id="stateTaxRate" for="text" class="center">State Tax Rate: </label>
             <label id="ficaTaxRate" for="text" class="center">Fica Tax Rate: </label>            
             <label id="takeHomePay" for="text" class="center">Take Home pay per month: </label>
         </form>        
-        <p class="textCenter spacing">The IRS uses <a href="https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2022">tax brackets</a> to calcuate the marginal federal tax </p>
-        <p class="textCenter spacing">Oklahoma State uses <a href="https://oklahoma.gov/content/dam/ok/en/tax/documents/resources/publications/businesses/withholding-tables/WHTables-2022.pdf"> tax brackets </a> to calculate the marginal state tax </p>
+        <p id="afterCalculationText" class="textCenter spacing">
+            The IRS uses <a href="https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2022">tax brackets</a> to calcuate the marginal federal tax <br>
+            Oklahoma State uses <a href="https://oklahoma.gov/content/dam/ok/en/tax/documents/resources/publications/businesses/withholding-tables/WHTables-2022.pdf"> tax brackets </a> to calculate the marginal state tax
+        </p>
     </main>
     <footer>
 

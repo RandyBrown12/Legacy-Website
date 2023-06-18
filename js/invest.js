@@ -1,17 +1,20 @@
-import {getFederalTaxRate, getStateTaxRate, getFicaTaxRate, setBracketMaximum} from "./taxRates.js";
+import { getFederalTaxRate, getStateTaxRate, getFicaTaxRate, setBracketMaximum } from "./taxRates.js";
 
 //Elements
-const hoursInput = document.getElementById("hours");
-const salaryInput = document.getElementById("salary");
-const computeButton = document.getElementById("compute");
-const resetButton = document.getElementById("reset");
 const beforeTaxRateOutput = document.getElementById("beforeTaxPay");
+const computeButton = document.getElementById("compute");
 const federalTaxRateOutput = document.getElementById("federalTaxRate");
-const stateTaxRateOutput = document.getElementById("stateTaxRate");
 const ficaTaxRateOutput = document.getElementById("ficaTaxRate");
-const takeHomePayOutput = document.getElementById("takeHomePay");
+const hoursInput = document.getElementById("hours");
 const optionBox = document.getElementById("timeConverter");
+const resetButton = document.getElementById("reset");
+const salaryInput = document.getElementById("salary");
+const stateTaxRateOutput = document.getElementById("stateTaxRate");
+const takeHomePayOutput = document.getElementById("takeHomePay");
+const afterCalculationForm = document.getElementById("afterCalculation");
+const afterCalculationText = document.getElementById("afterCalculationText");
 
+afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "hidden";
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
 
 // Events
@@ -26,22 +29,19 @@ function takeHomePay() {
     federalTaxRateOutput.textContent = federalTaxRateOutput.textContent.substring(0, 19);
     stateTaxRateOutput.textContent = stateTaxRateOutput.textContent.substring(0, 17);
     takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 24);
-    ficaTaxRateOutput.textContent = ficaTaxRateOutput.textContent.substring(0, 23);
+    ficaTaxRateOutput.textContent = ficaTaxRateOutput.textContent.substring(0, 16);
     let workHours = parseInt(hoursInput.value);
     let salary = parseFloat(salaryInput.value);
-    try
-    {
-        if((isNaN(workHours) && conversionOption === "Hour") || isNaN(salary))
-        {
+    try {
+        if ((isNaN(workHours) && conversionOption === "Hour") || isNaN(salary)) {
             throw "Please enter numbers in the textboxes!";
         }
         resetTextboxes();
-    } catch(e) {
+    } catch (e) {
         window.alert(e);
     }
 
-    if(conversionOption === "Hour") 
-    {
+    if (conversionOption === "Hour") {
         salary *= workHours;
         conversionOption = "Week";
     }
@@ -57,6 +57,7 @@ function takeHomePay() {
     ficaTaxRateOutput.textContent += (ficaTaxedIncome / salary * 100).toFixed(2) + "%";
     salary -= federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome;
     takeHomePayOutput.textContent += " " + Math.round(salary / 12) + "/month";
+    afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "visible";
 }
 
 function resetTextboxes() {
@@ -64,7 +65,7 @@ function resetTextboxes() {
 }
 
 function selectedOption() {
-    if(timeConverter.selectedIndex !== 0) {
+    if (timeConverter.selectedIndex !== 0) {
         hoursInput.disabled = true;
         hoursInput.value = hoursInput.placeholder = "";
         return;

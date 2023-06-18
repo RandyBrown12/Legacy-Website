@@ -10,7 +10,7 @@
 :root {
     /* FONTS */
     --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
-    --BODY-FONT-FAMILY: 'Mukta', sans-serif;
+    --BODY-FONT: 20px 'Mukta',sans-serif;
     --FONT-SIZE: 2.5vw;
 
     /* COLORS */
@@ -18,12 +18,14 @@
     --HEADER-FONT-COLOR: black;
     --HOVER-COLOR: #3c3939;
     --BODY-COLOR: #407899;
+    --FORM-BG-COLOR: gray;
 
     /* BORDERS */
     --BORDER-SIZE: 3px;
     --BORDER-STYLE: solid;
     --BORDER-COLOR: black;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
+    --INPUT-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
 
     /* SIZE */
     --FORM-WIDTH-SIZE: 50%;
@@ -88,7 +90,7 @@ body {
 
 /* BODY */
 main {
-    font-family: var(--BODY-FONT-FAMILY);
+    font: var(--BODY-FONT);
 }
 
 /* FORM */
@@ -107,6 +109,14 @@ main {
 .calculateForm__button {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
+}
+
+.form__bg {
+    background-color: var(--FORM-BG-COLOR);
+}
+
+.form__input {
+    border: var(--INPUT-BORDER);
 }
 
 /* || UTILITY */
@@ -129,8 +139,12 @@ main {
     margin-top: 0.3em;
 }
 
+.removeHover:focus {
+    outline: none;
+}
+
 /* Media Query for small phone */
-@media screen and (min-width: 620px)
+@media screen and (min-width: 670px)
 {
     .calculateForm {
         width: 47%;
