@@ -13,7 +13,7 @@
     --BODY-FONT-FAMILY: 'Mukta',sans-serif;
     --BODY-FONT: 20px var(--BODY-FONT-FAMILY);
     --INPUT-FONT-SIZE: 17px;
-    --FONT-SIZE: 2.5vw;
+    --FONT-SIZE: 2.6vw;
 
     /* COLORS */
     --HEADER-COLOR: #2CC437;
@@ -123,6 +123,11 @@ main {
 
 .form__input::placeholder {
     font: var(--INPUT-FONT-SIZE) var(--BODY-FONT-FAMILY);
+}
+
+.canvas__donutChart {
+    width: 100%;
+    max-width: 700px;
 }
 /* || UTILITY */
 .offscreen {

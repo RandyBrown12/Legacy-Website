@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <script type="module" src="js/invest.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
     <title>My Website!</title>
 </head>
 
@@ -29,7 +30,7 @@
         <form class="form__bg calculateForm">
             <label for="text" class="textCenter wrap">Hours planning to Work per week: </label>
             <input type="text" id="hours" class="center removeHover form__input" maxlength="3" placeholder="Ex: 15">
-            <label for="text" class="textCenter wrap">Expected Salary in years before taxes: </label>
+            <label for="text" class="textCenter wrap">Expected Salary before taxes: </label>
             <div class="center">
                 <input type="text" id="salary" class="center removeHover form__input" maxlength="9" placeholder="Ex: 60000">
                 <select name="timeConverter" id="timeConverter">
@@ -51,7 +52,8 @@
             <label id="stateTaxRate" for="text" class="center">State Tax Rate: </label>
             <label id="ficaTaxRate" for="text" class="center">Fica Tax Rate: </label>            
             <label id="takeHomePay" for="text" class="center">Take Home pay per month: </label>
-        </form>        
+        </form>
+        <canvas class="canvas__donutChart" id="donutChart"></canvas>
         <p id="afterCalculationText" class="textCenter spacing">
             The IRS uses <a href="https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2022">tax brackets</a> to calcuate the marginal federal tax <br>
             Oklahoma State uses <a href="https://oklahoma.gov/content/dam/ok/en/tax/documents/resources/publications/businesses/withholding-tables/WHTables-2022.pdf"> tax brackets </a> to calculate the marginal state tax <br>
