@@ -51,7 +51,7 @@ export function getStateTaxRate(grossIncome)
 export function getFicaTaxRate(grossIncome) 
 {
     let totalTaxIncome = 0;
-    totalTaxIncome += (grossIncome > ficaMaximumRate ? ficaMaximumRate : grossIncome) * ficaTaxRate;
+    totalTaxIncome += (grossIncome > ficaMaximumRate ? 0 : grossIncome) * ficaTaxRate;
     totalTaxIncome += (grossIncome > medicareMaxiumRate ? medicareTaxRate[1] : medicareTaxRate[0]) * grossIncome;
     return parseFloat(totalTaxIncome.toFixed(2));
 }

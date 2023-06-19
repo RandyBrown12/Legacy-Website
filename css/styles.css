@@ -10,7 +10,9 @@
 :root {
     /* FONTS */
     --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
-    --BODY-FONT: 20px 'Mukta',sans-serif;
+    --BODY-FONT-FAMILY: 'Mukta',sans-serif;
+    --BODY-FONT: 20px var(--BODY-FONT-FAMILY);
+    --INPUT-FONT-SIZE: 17px;
     --FONT-SIZE: 2.5vw;
 
     /* COLORS */
@@ -119,6 +121,9 @@ main {
     border: var(--INPUT-BORDER);
 }
 
+.form__input::placeholder {
+    font: var(--INPUT-FONT-SIZE) var(--BODY-FONT-FAMILY);
+}
 /* || UTILITY */
 .offscreen {
     position: absolute;
