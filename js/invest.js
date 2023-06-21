@@ -27,11 +27,12 @@ function takeHomePay()
     let taxRate = 0, grossIncome = 0;
     let conversionOption = timeConverter.options[timeConverter.selectedIndex].text;
     beforeTaxRateOutput.textContent = beforeTaxRateOutput.textContent.substring(0, 29);
-    federalTaxRateOutput.textContent = federalTaxRateOutput.textContent.substring(0, 19);
-    stateTaxRateOutput.textContent = stateTaxRateOutput.textContent.substring(0, 17);
-    takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 24);
-    ficaTaxRateOutput.textContent = ficaTaxRateOutput.textContent.substring(0, 16);
+    federalTaxRateOutput.textContent = federalTaxRateOutput.textContent.substring(0, 17);
+    stateTaxRateOutput.textContent = stateTaxRateOutput.textContent.substring(0, 15);
+    takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 22);
+    ficaTaxRateOutput.textContent = ficaTaxRateOutput.textContent.substring(0, 15);
     let workHours = parseInt(hoursInput.value);
+
     salary = parseFloat(salaryInput.value);
     try {
         if ((isNaN(workHours) && conversionOption === "Hour") || isNaN(salary)) {
@@ -40,6 +41,7 @@ function takeHomePay()
         resetTextboxes();
     } catch (e) {
         window.alert(e);
+        return
     }
 
     if (conversionOption === "Hour") {
@@ -53,9 +55,9 @@ function takeHomePay()
     federalTaxedIncome = getFederalTaxRate(salary);
     stateTaxedIncome = getStateTaxRate(salary);
     ficaTaxedIncome = getFicaTaxRate(salary);
-    federalTaxRateOutput.textContent += (federalTaxedIncome / salary * 100).toFixed(2) + "%";
-    stateTaxRateOutput.textContent += (stateTaxedIncome / salary * 100).toFixed(2) + "%";
-    ficaTaxRateOutput.textContent += (ficaTaxedIncome / salary * 100).toFixed(2) + "%";
+    federalTaxRateOutput.textContent += " " + (federalTaxedIncome / salary * 100).toFixed(2) + "%";
+    stateTaxRateOutput.textContent += " " + (stateTaxedIncome / salary * 100).toFixed(2) + "%";
+    ficaTaxRateOutput.textContent += " " + (ficaTaxedIncome / salary * 100).toFixed(2) + "%";
     salary -= federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome;
     salary = salary.toFixed(2);
     takeHomePayOutput.textContent += " " + Math.round(salary / 12) + "/month";
@@ -78,20 +80,22 @@ function selectedOption() {
 }
 
 //Chart
+let myChart = null
 function createDonutChart() {
-    var myChart = new Chart(donutChartCanvas, {
+    if(myChart !== null) {
+        myChart.destroy()
+    }
+    myChart = new Chart(donutChartCanvas, {
         type: 'doughnut',
         data: {
           labels: ['Federal Tax', 'State Tax', 'FICA', 'Remaining Income'],
           datasets: [{
             data: [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, salary],
             backgroundColor: ['#FF0000','#00FF00','#0000FF','#000000'],
-            borderColor: ['rgba(255,99,132,1)','rgba(54, 162, 235, 1)','rgba(255, 206, 86, 1)','rgba(75, 192, 192, 1)'],
             borderWidth: 1
           }]
         },
-        options: {
-          responsive: false,
-        }
+        options: {responsive: false,}
       });
+
 }
