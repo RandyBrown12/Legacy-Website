@@ -95,7 +95,13 @@ function createDonutChart() {
             borderWidth: 1
           }]
         },
-        options: {responsive: false,}
+        options: {responsive: false, maintainAspectRatio: false,
+                title: {display: true, text:'Amount of Money after Taxes annually'},
+        }
       });
-
+      if(donutChartCanvas.backgroundColor === "white") {
+        return;
+      }
+      donutChartCanvas.style.backgroundColor = "white";
+      donutChartCanvas.style.border = "1px solid black";
 }
