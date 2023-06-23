@@ -16,32 +16,33 @@ const afterCalculationText = document.getElementById("afterCalculationText");
 const donutChartCanvas = document.getElementById("donutChart");
 afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "hidden";
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
-
+let allTaxes = [];
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", resetTextboxes);
 optionBox.addEventListener("change", selectedOption);
-let federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0, salary = 0;
+
 function takeHomePay() 
 {
-    let taxRate = 0, grossIncome = 0;
+    let taxRate = 0, grossIncome = 0, federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0;
     let conversionOption = timeConverter.options[timeConverter.selectedIndex].text;
     beforeTaxRateOutput.textContent = beforeTaxRateOutput.textContent.substring(0, 29);
     federalTaxRateOutput.textContent = federalTaxRateOutput.textContent.substring(0, 17);
     stateTaxRateOutput.textContent = stateTaxRateOutput.textContent.substring(0, 15);
-    takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 22);
+    takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 24);
     ficaTaxRateOutput.textContent = ficaTaxRateOutput.textContent.substring(0, 15);
-    let workHours = parseInt(hoursInput.value);
-
-    salary = parseFloat(salaryInput.value);
+    let workHours = parseFloat(hoursInput.value);
+    let salary = parseFloat(salaryInput.value);
     try {
         if ((isNaN(workHours) && conversionOption === "Hour") || isNaN(salary)) {
             throw "Please enter numbers in the textboxes!";
+        } else if(salary <= 0 || (conversionOption === "Hour" && workHours <= 0)) {
+            throw "Please enter positive numbers in the textboxes!";
         }
         resetTextboxes();
     } catch (e) {
         window.alert(e);
-        return
+        return;
     }
 
     if (conversionOption === "Hour") {
@@ -62,7 +63,8 @@ function takeHomePay()
     salary = salary.toFixed(2);
     takeHomePayOutput.textContent += " " + Math.round(salary / 12) + "/month";
     afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "visible";
-    createDonutChart();
+    allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, salary];
+    createDonutChart(allTaxes);
 }
 
 function resetTextboxes() {
@@ -81,7 +83,7 @@ function selectedOption() {
 
 //Chart
 let myChart = null
-function createDonutChart() {
+function createDonutChart(allTaxes) {
     if(myChart !== null) {
         myChart.destroy()
     }
@@ -90,16 +92,28 @@ function createDonutChart() {
         data: {
           labels: ['Federal Tax', 'State Tax', 'FICA', 'Remaining Income'],
           datasets: [{
-            data: [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, salary],
+            data: allTaxes,
             backgroundColor: ['#FF0000','#00FF00','#0000FF','#000000'],
             borderWidth: 1
           }]
         },
-        options: {responsive: false, maintainAspectRatio: false,
-                title: {display: true, text:'Amount of Money after Taxes annually'},
+        options: 
+        {
+            responsive: false, maintainAspectRatio: false,
+                title: 
+                {
+                    display: true, 
+                    text:'Amount of Money after Taxes annually',
+                    font: {
+                        family: 'Arial',
+                        size: 50,
+                        weight: 'bold',
+                    },
+                    colors: 'rgba(0, 0, 0, 1)',
+                },
         }
       });
-      if(donutChartCanvas.backgroundColor === "white") {
+      if(donutChartCanvas.style.backgroundColor === "white") {
         return;
       }
       donutChartCanvas.style.backgroundColor = "white";

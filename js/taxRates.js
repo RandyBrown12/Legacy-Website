@@ -1,9 +1,7 @@
 const federalYearlyRates = [[0.10, 10275], [0.12, 41775], [0.22, 89075], [0.24, 170050], [0.32, 215950], [0.35, 539900], [0.37, Infinity]];
 const stateYearlyRates = [[0, 0, 6350], [0, 0.0025, 7350], [2.50, 0.0075, 8850], [13.75, 0.0175, 10100], [35.63, 0.0275, 11250], [67.25, 0.0375, 13550], [153.50, 0.0475, Infinity]];
-const ficaMaximumRate = 160200;
-const medicareMaxiumRate = 200000;
-const ficaTaxRate = 0.072;
-const medicareTaxRate = [0.0145, 0.0235];
+const ficaMaximumRate = 160200, medicareMaxiumRate = 200000;
+const ficaTaxRate = 0.072, medicareTaxRate = [0.0145, 0.0235];
 
 export const setBracketMaximum = (salary) => federalYearlyRates[6][1] = stateYearlyRates[6][2] = salary;
 //Margin Tax Rate: $10,275 goes to 10%, $31500 goes to 12%, until it reaches a bracket.
@@ -38,12 +36,12 @@ export function getStateTaxRate(grossIncome)
     let taxes = 0;
     for(const [additionalIncome, marginalTaxRate, maxAllotedIncome] of stateYearlyRates)
     {
-        if(grossIncome > maxAllotedIncome) 
-        { 
-            prevMaxIncome = maxAllotedIncome
-            continue;
+        if(grossIncome <= maxAllotedIncome)
+        {
+            taxes = additionalIncome + (marginalTaxRate * (grossIncome - prevMaxIncome));
+            break;
         }
-        taxes = additionalIncome + (marginalTaxRate * (grossIncome - prevMaxIncome));
+        prevMaxIncome = maxAllotedIncome
     }
     return parseFloat(taxes.toFixed(2));
 }
