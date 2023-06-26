@@ -1,4 +1,4 @@
-import { getFederalTaxRate, getStateTaxRate, getFicaTaxRate, setBracketMaximum } from "./taxRates.js";
+import { getTaxRate, getFicaTaxRate, setBracketMaximum } from "./taxRates.js";
 
 //Elements
 const beforeTaxRateOutput = document.getElementById("beforeTaxPay");
@@ -53,8 +53,8 @@ function takeHomePay()
     salary *= conversionRatiosToYear.get(conversionOption);
     beforeTaxRateOutput.textContent += " " + Math.round(salary / 12) + "/month";
     setBracketMaximum(salary);
-    federalTaxedIncome = getFederalTaxRate(salary);
-    stateTaxedIncome = getStateTaxRate(salary);
+    federalTaxedIncome = getTaxRate(salary, "Federal");
+    stateTaxedIncome = getTaxRate(salary, "State");
     ficaTaxedIncome = getFicaTaxRate(salary);
     federalTaxRateOutput.textContent += " " + (federalTaxedIncome / salary * 100).toFixed(2) + "%";
     stateTaxRateOutput.textContent += " " + (stateTaxedIncome / salary * 100).toFixed(2) + "%";
@@ -81,7 +81,7 @@ function selectedOption() {
     hoursInput.placeholder = "Ex: 15";
 }
 
-//Chart
+//Doughnut chart:
 let myChart = null
 function createDonutChart(allTaxes) {
     if(myChart !== null) {
@@ -100,17 +100,25 @@ function createDonutChart(allTaxes) {
         options: 
         {
             responsive: false, maintainAspectRatio: false,
-                title: 
-                {
-                    display: true, 
-                    text:'Amount of Money after Taxes annually',
-                    font: {
-                        family: 'Arial',
-                        size: 50,
-                        weight: 'bold',
-                    },
-                    colors: 'rgba(0, 0, 0, 1)',
+            title: 
+            {
+                display: true, 
+                text:'Amount of Money after Taxes annually',
+                font: {
+                    family: 'Arial',
+                    size: 50,
+                    weight: 'bold',
                 },
+                colors: 'rgba(0, 0, 0, 1)',
+            },
+            plugins: {
+                datalabels:
+                {
+                    formatter: function(value) {
+                        return '$' + value;
+                    }
+                },
+            }
         }
       });
       if(donutChartCanvas.style.backgroundColor === "white") {

@@ -1,9 +1,14 @@
-const federalYearlyRates = [[0.10, 10275], [0.12, 41775], [0.22, 89075], [0.24, 170050], [0.32, 215950], [0.35, 539900], [0.37, Infinity]];
-const stateYearlyRates = [[0, 0, 6350], [0, 0.0025, 7350], [2.50, 0.0075, 8850], [13.75, 0.0175, 10100], [35.63, 0.0275, 11250], [67.25, 0.0375, 13550], [153.50, 0.0475, Infinity]];
+const yearlyRates = new Map([
+    ["Federal", [[0.10, 10275], [0.12, 41775], [0.22, 89075], [0.24, 170050], [0.32, 215950], [0.35, 539900], [0.37, Infinity]]], 
+    ["State", [[0, 6350], [0.0025, 7350], [0.0075, 8850], [0.0175, 10100], [0.0275, 11250], [0.0375, 13550], [0.0475, Infinity]]]
+]);
 const ficaMaximumRate = 160200, medicareMaxiumRate = 200000;
 const ficaTaxRate = 0.072, medicareTaxRate = [0.0145, 0.0235];
 
-export const setBracketMaximum = (salary) => federalYearlyRates[6][1] = stateYearlyRates[6][2] = salary;
+export const setBracketMaximum = (salary) => {
+    yearlyRates.set("Federal", [[0.10, 10275], [0.12, 41775], [0.22, 89075], [0.24, 170050], [0.32, 215950], [0.35, 539900], [0.37, salary]])
+    yearlyRates.set("State", [[0, 6350], [0.0025, 7350], [0.0075, 8850], [0.0175, 10100], [0.0275, 11250], [0.0375, 13550], [0.0475, salary]])
+}
 //Margin Tax Rate: $10,275 goes to 10%, $31500 goes to 12%, until it reaches a bracket.
 //1st additional money, 2nd number rate, 3rd number maxAllotedIncome
 
@@ -11,11 +16,11 @@ export const setBracketMaximum = (salary) => federalYearlyRates[6][1] = stateYea
 //Note 2: If in hours, convert hours to weeks otherwise convert [weeks,months,years] to years.
 //Test: $7.25 hr with 40 hrs/week should be 290 per week.
 //Test2: $290 week with 40 hrs/week should be 1256 per month.
-export function getFederalTaxRate(grossIncome) 
+export function getTaxRate(grossIncome, chosenTaxBracket) 
 {
     let prevMaxIncome = 0;
     let taxes = 0;
-    for(const [marginalTaxRate, maxAllotedIncome] of federalYearlyRates)
+    for(const [marginalTaxRate, maxAllotedIncome] of yearlyRates.get(chosenTaxBracket))
     {
         if(grossIncome > maxAllotedIncome)
         {
@@ -26,22 +31,6 @@ export function getFederalTaxRate(grossIncome)
             taxes += marginalTaxRate * (grossIncome - prevMaxIncome);
             break;
         }
-    }
-    return parseFloat(taxes.toFixed(2));
-}
-
-export function getStateTaxRate(grossIncome) 
-{
-    let prevMaxIncome = 0;
-    let taxes = 0;
-    for(const [additionalIncome, marginalTaxRate, maxAllotedIncome] of stateYearlyRates)
-    {
-        if(grossIncome <= maxAllotedIncome)
-        {
-            taxes = additionalIncome + (marginalTaxRate * (grossIncome - prevMaxIncome));
-            break;
-        }
-        prevMaxIncome = maxAllotedIncome
     }
     return parseFloat(taxes.toFixed(2));
 }
