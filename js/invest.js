@@ -1,22 +1,18 @@
 import { getTaxRate, getFicaTaxRate, setBracketMaximum } from "./taxRates.js";
 
 //Elements
-const beforeTaxRateOutput = document.getElementById("beforeTaxPay");
+const outputCalculatorForm = document.getElementById("outputCalculator");
 const computeButton = document.getElementById("compute");
-const federalTaxRateOutput = document.getElementById("federalTaxRate");
-const ficaTaxRateOutput = document.getElementById("ficaTaxRate");
 const hoursInput = document.getElementById("hours");
 const optionBox = document.getElementById("timeConverter");
 const resetButton = document.getElementById("reset");
 const salaryInput = document.getElementById("salary");
-const stateTaxRateOutput = document.getElementById("stateTaxRate");
-const takeHomePayOutput = document.getElementById("takeHomePay");
 const afterCalculationForm = document.getElementById("afterCalculation");
 const afterCalculationText = document.getElementById("afterCalculationText");
 const donutChartCanvas = document.getElementById("donutChart");
 afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "hidden";
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
-let allTaxes = [];
+
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", resetTextboxes);
@@ -24,19 +20,15 @@ optionBox.addEventListener("change", selectedOption);
 
 function takeHomePay() 
 {
-    let taxRate = 0, grossIncome = 0, federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0;
+    let federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0, incomeAfterTax = 0;
     let conversionOption = timeConverter.options[timeConverter.selectedIndex].text;
-    beforeTaxRateOutput.textContent = beforeTaxRateOutput.textContent.substring(0, 29);
-    federalTaxRateOutput.textContent = federalTaxRateOutput.textContent.substring(0, 17);
-    stateTaxRateOutput.textContent = stateTaxRateOutput.textContent.substring(0, 15);
-    takeHomePayOutput.textContent = takeHomePayOutput.textContent.substring(0, 24);
-    ficaTaxRateOutput.textContent = ficaTaxRateOutput.textContent.substring(0, 15);
+
     let workHours = parseFloat(hoursInput.value);
-    let salary = parseFloat(salaryInput.value);
+    let incomeBeforeTax = parseFloat(salaryInput.value);
     try {
-        if ((isNaN(workHours) && conversionOption === "Hour") || isNaN(salary)) {
+        if ((isNaN(workHours) && conversionOption === "Hour") || isNaN(incomeBeforeTax)) {
             throw "Please enter numbers in the textboxes!";
-        } else if(salary <= 0 || (conversionOption === "Hour" && workHours <= 0)) {
+        } else if(incomeBeforeTax <= 0 || (conversionOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
         }
         resetTextboxes();
@@ -46,25 +38,27 @@ function takeHomePay()
     }
 
     if (conversionOption === "Hour") {
-        salary *= workHours;
+        incomeBeforeTax *= workHours;
         conversionOption = "Week";
     }
+    
+    incomeBeforeTax *= conversionRatiosToYear.get(conversionOption);
+    setBracketMaximum(incomeBeforeTax);
 
-    salary *= conversionRatiosToYear.get(conversionOption);
-    beforeTaxRateOutput.textContent += " " + Math.round(salary / 12) + "/month";
-    setBracketMaximum(salary);
-    federalTaxedIncome = getTaxRate(salary, "Federal");
-    stateTaxedIncome = getTaxRate(salary, "State");
-    ficaTaxedIncome = getFicaTaxRate(salary);
-    federalTaxRateOutput.textContent += " " + (federalTaxedIncome / salary * 100).toFixed(2) + "%";
-    stateTaxRateOutput.textContent += " " + (stateTaxedIncome / salary * 100).toFixed(2) + "%";
-    ficaTaxRateOutput.textContent += " " + (ficaTaxedIncome / salary * 100).toFixed(2) + "%";
-    salary -= federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome;
-    salary = salary.toFixed(2);
-    takeHomePayOutput.textContent += " " + Math.round(salary / 12) + "/month";
+    federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal");
+    stateTaxedIncome = getTaxRate(incomeBeforeTax, "State");
+    ficaTaxedIncome = getFicaTaxRate(incomeBeforeTax);
+
+    incomeAfterTax = incomeBeforeTax - (federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
+    incomeAfterTax = incomeAfterTax.toFixed(2);
+
+    outputCalculatorForm.innerHTML = "Before Tax: $" + Math.round(incomeBeforeTax / 12) + "/month";
+    outputCalculatorForm.innerHTML += "<br>After Tax: $" + Math.round(incomeAfterTax / 12) + "/month";
     afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "visible";
-    allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, salary];
-    createDonutChart(allTaxes);
+
+    let allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, incomeAfterTax];
+    
+    createDonutChart(allTaxes, incomeBeforeTax);
 }
 
 function resetTextboxes() {
@@ -81,9 +75,8 @@ function selectedOption() {
     hoursInput.placeholder = "Ex: 15";
 }
 
-//Doughnut chart:
 let myChart = null
-function createDonutChart(allTaxes) {
+function createDonutChart(allTaxes, incomeBeforeTax) {
     if(myChart !== null) {
         myChart.destroy()
     }
@@ -93,7 +86,7 @@ function createDonutChart(allTaxes) {
           labels: ['Federal Tax', 'State Tax', 'FICA', 'Remaining Income'],
           datasets: [{
             data: allTaxes,
-            backgroundColor: ['#FF0000','#00FF00','#0000FF','#000000'],
+            backgroundColor: ['#000000','#E18A18','#1912DB','#41AC1A'],
             borderWidth: 1
           }]
         },
@@ -114,8 +107,13 @@ function createDonutChart(allTaxes) {
             plugins: {
                 datalabels:
                 {
+                    color: 'whitesmoke',
                     formatter: function(value) {
-                        return '$' + value;
+                        if(value === 0)
+                        {
+                            return null;
+                        }
+                        return (value / incomeBeforeTax * 100).toFixed(2) + "%";
                     }
                 },
             }
