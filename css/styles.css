@@ -50,7 +50,7 @@ body {
     font-family: var(--HEADER-FONT-FAMILY);
     font-size: max(15px, var(--FONT-SIZE)); /* Fix Collison with words at 980 width */
     font-weight: bolder;
-    justify-content: space-between;
+    justify-content: space-around;
     letter-spacing: 0.03em;
     padding: 1.0em;
     position: sticky;
@@ -130,9 +130,11 @@ main {
 .canvas__donutChart {
     margin-left: auto;
     margin-right: auto;
-    display: block;
+    display: none;
     width: 400px;
     height: 300px;
+    border: 1px solid black;
+    background-color: white;
 }
 /* || UTILITY */
 .offscreen {
