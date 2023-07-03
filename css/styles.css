@@ -48,18 +48,20 @@ body {
     border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
     display: flex;
     font-family: var(--HEADER-FONT-FAMILY);
-    font-size: var(--FONT-SIZE); /* Fix Collison with words at 980 width */
+    font-size: max(15px, var(--FONT-SIZE)); /* Fix Collison with words at 980 width */
     font-weight: bolder;
     justify-content: space-between;
     letter-spacing: 0.03em;
     padding: 1.0em;
     position: sticky;
     width: 100%; 
+    overflow-wrap: wrap;
 }
 
 .header__icon {
     margin: -0.7em;
     gap: 0.4em;
+    display: none;
 }
 
 .header__left-side {
@@ -129,6 +131,8 @@ main {
     margin-left: auto;
     margin-right: auto;
     display: block;
+    width: 400px;
+    height: 300px;
 }
 /* || UTILITY */
 .offscreen {
@@ -159,5 +163,14 @@ main {
 {
     .calculateForm {
         width: 47%;
+    }
+
+    .canvas__donutChart {
+        width: 650px;
+        height: 500px;
+    }
+
+    .header__icon {
+        display: block;
     }
 }

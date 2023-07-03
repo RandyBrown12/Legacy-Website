@@ -77,9 +77,17 @@ function selectedOption() {
 
 let myChart = null
 function createDonutChart(allTaxes, incomeBeforeTax) {
+    let chartFontSize = 0;
     if(myChart !== null) {
         myChart.destroy()
     }
+
+    if(donutChartCanvas.offsetWidth === 650 && donutChartCanvas.offsetHeight === 500) {
+        chartFontSize = 500;
+    } else if(donutChartCanvas.offsetWidth === 400 && donutChartCanvas.offsetHeight === 300) {
+        chartFontSize = 150;
+    }
+    
     myChart = new Chart(donutChartCanvas, {
         type: 'doughnut',
         data: {
@@ -99,8 +107,8 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
                 text:'Amount of Money after Taxes annually',
                 font: {
                     family: 'Arial',
-                    size: 50,
-                    weight: 'bold',
+                    size: 150,
+                    style: 'basic',
                 },
                 colors: 'rgba(0, 0, 0, 1)',
             },
