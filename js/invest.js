@@ -63,6 +63,7 @@ function takeHomePay()
 
 function reset() {
     outputCalculatorForm.value = salaryInput.value = hoursInput.value = "";
+    afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "hidden";
     if(myChart !== null) {
         myChart.destroy()
     }

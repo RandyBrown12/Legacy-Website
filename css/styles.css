@@ -11,10 +11,10 @@
 :root {
     /* FONTS */
     --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
-    --BODY-FONT-FAMILY: 'Mukta',sans-serif;
+    --BODY-FONT-FAMILY: 'Mukta', sans-serif;
     --BODY-FONT: 20px var(--BODY-FONT-FAMILY);
-    --INPUT-FONT-SIZE: 17px;
-    --FONT-SIZE: 2.6vw;
+    --INPUT-FONT-SIZE: 16px;
+    --FONT-SIZE: 2.8vw;
 
     /* COLORS */
     --HEADER-COLOR: #2CC437;
@@ -27,8 +27,10 @@
     --BORDER-SIZE: 3px;
     --BORDER-STYLE: solid;
     --BORDER-COLOR: black;
+    --BUTTON-COLOR: #96ACB7;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
     --INPUT-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
+    --BUTTON-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
 
     /* SIZE */
     --FORM-WIDTH-SIZE: 50%;
@@ -42,19 +44,20 @@ html {
 body {
     background: var(--BODY-COLOR);
 }
+
 /* || HEADER */
 .header {
     background-color: var(--HEADER-COLOR);
     border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
     font-family: var(--HEADER-FONT-FAMILY);
-    font-size: max(15px, var(--FONT-SIZE)); /* Fix Collison with words at 980 width */
+    font-size: max(15px, var(--FONT-SIZE));
     font-weight: bolder;
-    justify-content: space-around;
+
     letter-spacing: 0.03em;
     padding: 1.0em;
     position: sticky;
-    width: 100%; 
-    overflow-wrap: wrap;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .header__icon {
@@ -71,9 +74,9 @@ body {
 
 .header__right-side {
     gap: 2.2em;
-    float: right;
     padding: 14px;
     line-height: 100%;
+    align-self: flex-end;
 }
 
 .header__link {
@@ -83,11 +86,14 @@ body {
 
 .header__ul {
     list-style-type: none;
-    overflow: hidden;
-
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
+
 /* LINKS */
-.header__link:any-link, .header__link:visited {
+.header__link:any-link,
+.header__link:visited {
     text-decoration: none;
     display: inline;
 }
@@ -107,7 +113,7 @@ main {
     margin-right: auto;
     width: 90%;
     border: var(--FORM-BORDER);
-    border-radius: 15px; 
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     margin-bottom: 0.3em;
@@ -115,8 +121,22 @@ main {
 }
 
 .calculateForm__button {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
+    margin-top: 0.7em;
+    margin-bottom: 0.7em;
+    padding-left: 0.4em;
+    padding-right: 0.4em;
+    border: var(--BUTTON-BORDER);
+    background-color: var(--BUTTON-COLOR);
+}
+
+.canvas__donutChart {
+    background-color: white;
+    border: var(--INPUT-BORDER);
+    display: none;
+    height: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 400px;
 }
 
 .form__bg {
@@ -129,22 +149,9 @@ main {
 
 .form__input::placeholder {
     font: var(--INPUT-FONT-SIZE) var(--BODY-FONT-FAMILY);
+    padding-bottom: 4px;
 }
 
-.canvas__donutChart {
-    margin-left: auto;
-    margin-right: auto;
-    display: none;
-    width: 400px;
-    height: 300px;
-    border: 1px solid black;
-    background-color: white;
-    display: none;
-    width: 400px;
-    height: 300px;
-    border: 1px solid black;
-    background-color: white;
-}
 /* || UTILITY */
 .offscreen {
     position: absolute;
@@ -170,8 +177,7 @@ main {
 }
 
 /* Media Query for small phone */
-@media screen and (min-width: 670px)
-{
+@media screen and (min-width: 670px) {
     .calculateForm {
         width: 47%;
     }
