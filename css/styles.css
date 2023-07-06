@@ -5,6 +5,7 @@
     border: 0;
     box-sizing: border-box;
     padding: 0;
+    padding: 0;
 }
 
 /* || VARIABLES || */
@@ -64,9 +65,13 @@ body {
     margin: -0.7em;
     gap: 0.4em;
     display: none;
+    display: none;
 }
 
 .header__left-side {
+    float: left;
+    padding: 14px;
+    line-height: 100%;
     float: left;
     padding: 14px;
     line-height: 100%;
@@ -80,6 +85,7 @@ body {
 }
 
 .header__link {
+    gap: 1.2rem;
     gap: 1.2rem;
     color: var(--HEADER-FONT-COLOR);
 }
@@ -95,6 +101,7 @@ body {
 .header__link:any-link,
 .header__link:visited {
     text-decoration: none;
+    display: inline;
     display: inline;
 }
 
@@ -180,6 +187,15 @@ main {
 @media screen and (min-width: 670px) {
     .calculateForm {
         width: 47%;
+    }
+
+    .canvas__donutChart {
+        width: 650px;
+        height: 500px;
+    }
+
+    .header__icon {
+        display: block;
     }
 
     .canvas__donutChart {

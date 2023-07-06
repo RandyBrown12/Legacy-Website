@@ -16,6 +16,7 @@ const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], [
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", reset);
+resetButton.addEventListener("click", reset);
 optionBox.addEventListener("change", selectedOption);
 
 function takeHomePay() 
@@ -31,6 +32,7 @@ function takeHomePay()
         } else if(incomeBeforeTax <= 0 || (conversionOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
         }
+        reset();
         reset();
     } catch (e) {
         window.alert(e);
@@ -91,7 +93,15 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
         chartFontSize = 500;
     } else if(donutChartCanvas.offsetWidth === 400 && donutChartCanvas.offsetHeight === 300) {
         chartFontSize = 150;
+        donutChartCanvas.style.display = 'none';
     }
+
+    if(donutChartCanvas.offsetWidth === 650 && donutChartCanvas.offsetHeight === 500) {
+        chartFontSize = 500;
+    } else if(donutChartCanvas.offsetWidth === 400 && donutChartCanvas.offsetHeight === 300) {
+        chartFontSize = 150;
+    }
+    
     
     myChart = new Chart(donutChartCanvas, {
         type: 'doughnut',
@@ -114,6 +124,8 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
                     family: 'Arial',
                     size: 150,
                     style: 'basic',
+                    size: 150,
+                    style: 'basic',
                 },
                 colors: 'rgba(0, 0, 0, 1)',
             },
@@ -132,5 +144,6 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
             }
         }
       });
+      donutChartCanvas.style.display = 'block';
       donutChartCanvas.style.display = 'block';
 }
