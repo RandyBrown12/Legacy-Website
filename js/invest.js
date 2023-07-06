@@ -15,7 +15,7 @@ const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], [
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
-resetButton.addEventListener("click", resetTextboxes);
+resetButton.addEventListener("click", reset);
 optionBox.addEventListener("change", selectedOption);
 
 function takeHomePay() 
@@ -31,7 +31,7 @@ function takeHomePay()
         } else if(incomeBeforeTax <= 0 || (conversionOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
         }
-        resetTextboxes();
+        reset();
     } catch (e) {
         window.alert(e);
         return;
@@ -61,8 +61,11 @@ function takeHomePay()
     createDonutChart(allTaxes, incomeBeforeTax);
 }
 
-function resetTextboxes() {
-    salaryInput.value = hoursInput.value = "";
+function reset() {
+    outputCalculatorForm.value = salaryInput.value = hoursInput.value = "";
+    if(myChart !== null) {
+        myChart.destroy()
+    }
 }
 
 function selectedOption() {
@@ -77,9 +80,18 @@ function selectedOption() {
 
 let myChart = null
 function createDonutChart(allTaxes, incomeBeforeTax) {
+    let chartFontSize = 0;
     if(myChart !== null) {
         myChart.destroy()
+        donutChartCanvas.style.display = 'none';
     }
+
+    if(donutChartCanvas.offsetWidth === 650 && donutChartCanvas.offsetHeight === 500) {
+        chartFontSize = 500;
+    } else if(donutChartCanvas.offsetWidth === 400 && donutChartCanvas.offsetHeight === 300) {
+        chartFontSize = 150;
+    }
+    
     myChart = new Chart(donutChartCanvas, {
         type: 'doughnut',
         data: {
@@ -99,8 +111,8 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
                 text:'Amount of Money after Taxes annually',
                 font: {
                     family: 'Arial',
-                    size: 50,
-                    weight: 'bold',
+                    size: 150,
+                    style: 'basic',
                 },
                 colors: 'rgba(0, 0, 0, 1)',
             },
@@ -119,9 +131,5 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
             }
         }
       });
-      if(donutChartCanvas.style.backgroundColor === "white") {
-        return;
-      }
-      donutChartCanvas.style.backgroundColor = "white";
-      donutChartCanvas.style.border = "1px solid black";
+      donutChartCanvas.style.display = 'block';
 }
