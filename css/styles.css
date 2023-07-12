@@ -1,40 +1,62 @@
 @import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300&family=Playfair+Display+SC&display=swap');
 
 * {
-    margin: 0;
     border: 0;
     box-sizing: border-box;
-    padding: 0;
+    margin: 0;
     padding: 0;
 }
 
 /* || VARIABLES || */
 :root {
     /* FONTS */
-    --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
     --BODY-FONT-FAMILY: 'Mukta', sans-serif;
     --BODY-FONT: 20px var(--BODY-FONT-FAMILY);
-    --INPUT-FONT-SIZE: 16px;
     --FONT-SIZE: 2.8vw;
+    --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
+    --INPUT-FONT-SIZE: 16px;
 
     /* COLORS */
+    --BODY-COLOR: #407899;
+    --CHART-BG-COLOR: white;
+    --FORM-BG-COLOR: gray;
     --HEADER-COLOR: #2CC437;
     --HEADER-FONT-COLOR: black;
     --HOVER-COLOR: #3c3939;
-    --BODY-COLOR: #407899;
-    --FORM-BG-COLOR: gray;
 
     /* BORDERS */
+    --BORDER-COLOR: black;
     --BORDER-SIZE: 3px;
     --BORDER-STYLE: solid;
-    --BORDER-COLOR: black;
+    --BUTTON-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
     --BUTTON-COLOR: #96ACB7;
+    --FORM-BORDER-RADIUS: 15px;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
     --INPUT-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
-    --BUTTON-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
 
     /* SIZE */
+    --BUTTON-MARGIN: 0.7em;
+    --BUTTON-PADDING: 0.4em;
+    --CANVAS-MAX-HEIGHT: 300px;
+    --CANVAS-MAX-WIDTH: 400px;
+    --FORM-MAX-SIZE: 80%;
     --FORM-WIDTH-SIZE: 50%;
+    --HEADER-ICON-GAP: 0.4em;
+    --HEADER-ICON-MARGIN: -0.7em;
+    --HEADER-LETTER-SPACING: 0.03em;
+    --HEADER-LINE-HEIGHT: 100%;
+    --HEADER-LINK-GAP: 1.2rem;
+    --HEADER-PADDING: 1.0em;
+    --HEADER-RIGHTSIDE-GAP: 2.2em;
+    --HEADER-SIDE-PADDING: 14px;
+    --HEADER-TEXT-FONT-SIZE-CAP: 15px;
+    --HEADER-WIDTH: 100%;
+    --HEIGHT-SPACING: 0.3em;
+    --LARGE-HEIGHT-SPACING: 0.8em;
+    --MARGIN-AUTO-LEFT-AND-RIGHT: 0 auto 0 auto;
+    --MARGIN-AUTO-TOP-AND-BOTTOM: auto 0 auto 0;
+    --OFFSCREEN-MOVE: -10000px;
+    --PLACEHOLDER-TEXT-MOVE: 4px;
 }
 
 /* Block */
@@ -50,43 +72,37 @@ body {
 .header {
     background-color: var(--HEADER-COLOR);
     border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
-    font-family: var(--HEADER-FONT-FAMILY);
-    font-size: max(15px, var(--FONT-SIZE));
-    font-weight: bolder;
-
-    letter-spacing: 0.03em;
-    padding: 1.0em;
-    position: sticky;
-    width: 100%;
     flex-wrap: wrap;
+    font-family: var(--HEADER-FONT-FAMILY);
+    font-size: max(var(--HEADER-TEXT-FONT-SIZE-CAP), var(--FONT-SIZE));
+    font-weight: bolder;
+    letter-spacing: var(--HEADER-LETTER-SPACING);
+    padding: var(--HEADER-PADDING);
+    position: sticky;
+    width: var(--HEADER-WIDTH);
 }
 
 .header__icon {
-    margin: -0.7em;
-    gap: 0.4em;
     display: none;
-    display: none;
+    gap: var(--HEADER-ICON-GAP);
+    margin: var(--HEADER-ICON-MARGIN);
 }
 
 .header__left-side {
     float: left;
-    padding: 14px;
-    line-height: 100%;
-    float: left;
-    padding: 14px;
-    line-height: 100%;
+    padding: var(--HEADER-SIDE-PADDING);
+    line-height: var(--HEADER-LINE-HEIGHT);
 }
 
 .header__right-side {
-    gap: 2.2em;
-    padding: 14px;
-    line-height: 100%;
+    gap: var(--HEADER-RIGHTSIDE-GAP);
+    padding: var(--HEADER-SIDE-PADDING);
+    line-height: var(--HEADER-LINE-HEIGHT);
     align-self: flex-end;
 }
 
 .header__link {
-    gap: 1.2rem;
-    gap: 1.2rem;
+    gap: var(--HEADER-LINK-GAP);
     color: var(--HEADER-FONT-COLOR);
 }
 
@@ -102,7 +118,6 @@ body {
 .header__link:visited {
     text-decoration: none;
     display: inline;
-    display: inline;
 }
 
 .header__link:hover {
@@ -116,34 +131,31 @@ main {
 
 /* FORM */
 .calculateForm {
-    margin-left: auto;
-    margin-right: auto;
-    width: 90%;
+    border-radius: var(--FORM-BORDER-RADIUS);
     border: var(--FORM-BORDER);
-    border-radius: 15px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 0.3em;
+    margin: var(--MARGIN-AUTO-LEFT-AND-RIGHT);
+    width: var(--FORM-MAX-SIZE);
     word-wrap: nowrap;
 }
 
 .calculateForm__button {
-    margin-top: 0.7em;
-    margin-bottom: 0.7em;
-    padding-left: 0.4em;
-    padding-right: 0.4em;
-    border: var(--BUTTON-BORDER);
     background-color: var(--BUTTON-COLOR);
+    border: var(--BUTTON-BORDER);
+    margin-bottom: var(--BUTTON-MARGIN);
+    margin-top: var(--BUTTON-MARGIN);
+    padding-left: var(--BUTTON-PADDING);
+    padding-right: var(--BUTTON-PADDING);
 }
 
 .canvas__donutChart {
-    background-color: white;
+    background-color: var(--CHART-BG-COLOR);
     border: var(--INPUT-BORDER);
     display: none;
-    height: 300px;
-    margin-left: auto;
-    margin-right: auto;
-    width: 400px;
+    height: var(--CANVAS-MAX-HEIGHT);
+    margin: var(--MARGIN-AUTO-LEFT-AND-RIGHT);
+    width: var(--CANVAS-MAX-WIDTH);
 }
 
 .form__bg {
@@ -156,13 +168,13 @@ main {
 
 .form__input::placeholder {
     font: var(--INPUT-FONT-SIZE) var(--BODY-FONT-FAMILY);
-    padding-bottom: 4px;
+    padding-bottom: var(--PLACEHOLDER-TEXT-MOVE);
 }
 
 /* || UTILITY */
 .offscreen {
     position: absolute;
-    left: -10000px;
+    left: var(--OFFSCREEN-MOVE);
 }
 
 .textCenter {
@@ -174,33 +186,39 @@ main {
     width: var(--FORM-WIDTH-SIZE);
 }
 
+.center__photo {
+    margin: var(--MARGIN-AUTO-LEFT-AND-RIGHT);
+    display: block;
+}
+
 .spacing {
-    margin-bottom: 0.3em;
-    margin-top: 0.3em;
+    margin-bottom: var(--HEIGHT-SPACING);
+    margin-top: var(--HEIGHT-SPACING);
+}
+
+.large__spacing {
+    margin-bottom: var(--LARGE-HEIGHT-SPACING);
+    margin-top: var(--LARGE-HEIGHT-SPACING);
 }
 
 .removeHover:focus {
     outline: none;
 }
 
+.hide {
+    display: none;
+}
+
 /* Media Query for small phone */
+/* Outside of min width */
 @media screen and (min-width: 670px) {
     .calculateForm {
-        width: 47%;
+        --FORM-MAX-SIZE: 50%;
     }
 
     .canvas__donutChart {
-        width: 650px;
-        height: 500px;
-    }
-
-    .header__icon {
-        display: block;
-    }
-
-    .canvas__donutChart {
-        width: 650px;
-        height: 500px;
+        --CANVAS-MAX-WIDTH: 650px;
+        --CANVAS-MAX-HEIGHT: 500px;
     }
 
     .header__icon {

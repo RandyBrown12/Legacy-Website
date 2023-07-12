@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/styles.css">
     <script type="module" src="js/invest.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@0.7.0"></script>
     <title>Investment Calculator</title>
 </head>
@@ -29,7 +29,8 @@
             <input type="text" id="hours" class="center removeHover form__input" maxlength="3" placeholder="Ex: 15">
             <label for="salary" class="textCenter wrap">Expected Salary before taxes: </label>
             <div class="center">
-                <input type="text" id="salary" class="center removeHover form__input" maxlength="9" placeholder="Ex: 60000">
+                <input type="text" id="salary" class="center removeHover form__input" maxlength="9"
+                    placeholder="Ex: 60000">
                 <select name="timeConverter" id="timeConverter">
                     <option value="hour">Hour</option>
                     <option value="week">Week</option>
@@ -43,14 +44,22 @@
                 <button type="button" id="advanced" class="calculateForm__button" name="advanced">Advanced</button>
             </div>
         </form>
-        <form id="afterCalculation" class="form__bg calculateForm">
+        <form id="advancedForm" class="form__bg calculateForm hide">
+            <p class="center">Advanced Options:</p>
+        </form>
+        <form id="afterCalculation" class="form__bg calculateForm hide">
             <p id="outputCalculator" class="center"></p>
         </form>
         <canvas height="600" width="800" class="canvas__donutChart" id="donutChart"></canvas>
-        <p id="afterCalculationText" class="textCenter spacing">
-            The IRS uses <a href="https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2022">tax brackets</a> to calcuate the marginal federal tax <br>
-            Oklahoma State uses <a href="https://oklahoma.gov/content/dam/ok/en/tax/documents/resources/publications/businesses/withholding-tables/WHTables-2022.pdf"> tax brackets </a> to calculate the marginal state tax <br>
-            FICA uses <a href="https://www.ssa.gov/oact/cola/cbb.html">tax brackets</a> to calcuate Federal Insurance Contributions Act taxes.
+        <p id="afterCalculationInfo" class="textCenter spacing hide">
+            The IRS uses <a
+                href="https://www.irs.gov/newsroom/irs-provides-tax-inflation-adjustments-for-tax-year-2022">tax
+                brackets</a> to calcuate the marginal federal tax <br>
+            Oklahoma State uses <a
+                href="https://oklahoma.gov/content/dam/ok/en/tax/documents/resources/publications/businesses/withholding-tables/WHTables-2022.pdf">
+                tax brackets </a> to calculate the marginal state tax <br>
+            FICA uses <a href="https://www.ssa.gov/oact/cola/cbb.html">tax brackets</a> to calcuate Federal Insurance
+            Contributions Act taxes
         </p>
     </main>
     <footer>

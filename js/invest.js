@@ -8,16 +8,22 @@ const optionBox = document.getElementById("timeConverter");
 const resetButton = document.getElementById("reset");
 const salaryInput = document.getElementById("salary");
 const afterCalculationForm = document.getElementById("afterCalculation");
-const afterCalculationText = document.getElementById("afterCalculationText");
+const afterCalculationInfo = document.getElementById("afterCalculationInfo");
 const donutChartCanvas = document.getElementById("donutChart");
-afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "hidden";
+const advancedFormButton = document.getElementById("advanced");
+const advancedForm = document.getElementById("advancedForm");
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", reset);
-resetButton.addEventListener("click", reset);
+advancedFormButton.addEventListener("click", addForm);
 optionBox.addEventListener("change", selectedOption);
+
+function addForm() 
+{
+    advancedForm.style.display = "block";
+}
 
 function takeHomePay() 
 {
@@ -32,7 +38,6 @@ function takeHomePay()
         } else if(incomeBeforeTax <= 0 || (conversionOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
         }
-        reset();
         reset();
     } catch (e) {
         window.alert(e);
@@ -56,7 +61,7 @@ function takeHomePay()
 
     outputCalculatorForm.innerHTML = "Before Tax: $" + Math.round(incomeBeforeTax / 12) + "/month";
     outputCalculatorForm.innerHTML += "<br>After Tax: $" + Math.round(incomeAfterTax / 12) + "/month";
-    afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "visible";
+    afterCalculationInfo.style.display = afterCalculationForm.style.display = "block";
 
     let allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, incomeAfterTax];
     
@@ -65,7 +70,7 @@ function takeHomePay()
 
 function reset() {
     outputCalculatorForm.value = salaryInput.value = hoursInput.value = "";
-    afterCalculationText.style.visibility = afterCalculationForm.style.visibility = "hidden";
+    advancedForm.style.display = afterCalculationInfo.style.display = afterCalculationForm.style.display = "none";
     if(myChart !== null) {
         myChart.destroy()
     }
@@ -95,13 +100,6 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
         chartFontSize = 150;
         donutChartCanvas.style.display = 'none';
     }
-
-    if(donutChartCanvas.offsetWidth === 650 && donutChartCanvas.offsetHeight === 500) {
-        chartFontSize = 500;
-    } else if(donutChartCanvas.offsetWidth === 400 && donutChartCanvas.offsetHeight === 300) {
-        chartFontSize = 150;
-    }
-    
     
     myChart = new Chart(donutChartCanvas, {
         type: 'doughnut',
@@ -115,15 +113,13 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
         },
         options: 
         {
-            responsive: false, maintainAspectRatio: false,
+            responsive: false, maintainAspectRatio: true,
             title: 
             {
                 display: true, 
                 text:'Amount of Money after Taxes annually',
                 font: {
                     family: 'Arial',
-                    size: 150,
-                    style: 'basic',
                     size: 150,
                     style: 'basic',
                 },
@@ -144,6 +140,5 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
             }
         }
       });
-      donutChartCanvas.style.display = 'block';
       donutChartCanvas.style.display = 'block';
 }
