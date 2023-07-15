@@ -6,10 +6,9 @@ The first link will consist of an investment calculator and perform actions base
 
 To access the website, https://RandyBrown12.github.io
 
-<!--
-To Do:
-* [ ] Convert answer into their desired date
-* [ ] Consider doing calculations for spending
+Ideas:
+
+* [X] Convert answer into their desired date
+* [ ] Consider doing calculations for spending/debt
 * [ ] Make Site look more cleaner
-* [ ] Consider making graphs 
--->
+* [ ] Add a form for taking out student loans vs expected annual take home pay.

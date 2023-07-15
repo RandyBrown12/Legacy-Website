@@ -12,7 +12,9 @@ const afterCalculationInfo = document.getElementById("afterCalculationInfo");
 const donutChartCanvas = document.getElementById("donutChart");
 const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
+const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
+const yearToConversionRatio = new Map([["Year", 1],["Month", 12],["Week", 52.1429]]);
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
@@ -28,14 +30,15 @@ function addForm()
 function takeHomePay() 
 {
     let federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0, incomeAfterTax = 0;
-    let conversionOption = timeConverter.options[timeConverter.selectedIndex].text;
+    let salaryTimeOption = timeConverter.options[timeConverter.selectedIndex].text;
+    let afterCalculationTimeOption = afterCalcuationFormDropDown.options[afterCalcuationFormDropDown.selectedIndex].text;
 
     let workHours = parseFloat(hoursInput.value);
     let incomeBeforeTax = parseFloat(salaryInput.value);
     try {
-        if ((isNaN(workHours) && conversionOption === "Hour") || isNaN(incomeBeforeTax)) {
+        if ((isNaN(workHours) && salaryTimeOption === "Hour") || isNaN(incomeBeforeTax)) {
             throw "Please enter numbers in the textboxes!";
-        } else if(incomeBeforeTax <= 0 || (conversionOption === "Hour" && workHours <= 0)) {
+        } else if(incomeBeforeTax <= 0 || (salaryTimeOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
         }
         reset();
@@ -44,12 +47,12 @@ function takeHomePay()
         return;
     }
 
-    if (conversionOption === "Hour") {
+    if (salaryTimeOption === "Hour") {
         incomeBeforeTax *= workHours;
-        conversionOption = "Week";
+        salaryTimeOption = "Week";
     }
     
-    incomeBeforeTax *= conversionRatiosToYear.get(conversionOption);
+    incomeBeforeTax *= conversionRatiosToYear.get(salaryTimeOption);
     setBracketMaximum(incomeBeforeTax);
 
     federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal");
@@ -59,8 +62,8 @@ function takeHomePay()
     incomeAfterTax = incomeBeforeTax - (federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
     incomeAfterTax = incomeAfterTax.toFixed(2);
 
-    outputCalculatorForm.innerHTML = "Before Tax: $" + Math.round(incomeBeforeTax / 12) + "/month";
-    outputCalculatorForm.innerHTML += "<br>After Tax: $" + Math.round(incomeAfterTax / 12) + "/month";
+    outputCalculatorForm.innerHTML = "Before Tax: $" + (incomeBeforeTax / yearToConversionRatio.get(afterCalculationTimeOption)).toFixed(2) + "/" + afterCalculationTimeOption;
+    outputCalculatorForm.innerHTML += "<br>After Tax: $" + (incomeAfterTax / yearToConversionRatio.get(afterCalculationTimeOption)).toFixed(2) + "/"+ afterCalculationTimeOption;
     afterCalculationInfo.style.display = afterCalculationForm.style.display = "block";
 
     let allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, incomeAfterTax];

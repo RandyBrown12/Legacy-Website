@@ -26,7 +26,7 @@
         </header>
     </nav>
     <main>
-        <h2 class="textCenter spacing">Calculate your take home pay for the expected job</h2>
+        <h2 class="textCenter spacing">Calculate your take home pay for the job</h2>
         <form class="form__bg calculateForm">
             <label for="hours" class="textCenter wrap">Hours planning to Work per week: </label>
             <input type="text" id="hours" class="center removeHover form__input" maxlength="3" placeholder="Ex: 15">
@@ -41,6 +41,12 @@
                     <option value="year">Year</option>
                 </select>
             </div>
+            <label for="salary" class="textCenter wrap">Select Conversion Rate After Time: </label>
+            <select class="center" name="afterCalculationTime" id="afterCalculationTime">
+                <option value="year">Year</option>
+                <option value="month">Month</option>
+                <option value="week">Week</option>
+            </select>
             <div class="center">
                 <button type="button" id="compute" class="calculateForm__button" name="compute">Calculate Pay</button>
                 <button type="button" id="reset" class="calculateForm__button" name="reset">Reset</button>
