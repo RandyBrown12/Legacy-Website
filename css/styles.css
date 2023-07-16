@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300&family=Playfair+Display+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mukta:wght@300&family=Playfair+Display+SC&family=Tektur&display=swap');
 
 * {
     border: 0;
@@ -12,9 +12,11 @@
     /* FONTS */
     --BODY-FONT-FAMILY: 'Mukta', sans-serif;
     --BODY-FONT: 20px var(--BODY-FONT-FAMILY);
+    --BUTTON-FONT-FAMILY: 'Tektur', sans-serif;
     --FONT-SIZE: 2.8vw;
     --HEADER-FONT-FAMILY: 'Playfair Display SC', serif;
     --INPUT-FONT-SIZE: 16px;
+
 
     /* COLORS */
     --BODY-COLOR: #407899;
@@ -29,14 +31,17 @@
     --BORDER-SIZE: 3px;
     --BORDER-STYLE: solid;
     --BUTTON-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
-    --BUTTON-COLOR: #96ACB7;
+    --BUTTON-COLOR: #5AD2F499;
     --FORM-BORDER-RADIUS: 15px;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
     --INPUT-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
 
     /* SIZE */
-    --BUTTON-MARGIN: 0.7em;
-    --BUTTON-PADDING: 0.4em;
+    --BUTTON-MARGIN: 1.2em;
+    --BUTTON-PADDING-LEFT-AND-RIGHT: 1.0em;
+    --BUTTON-PADDING-TOP-AND-BOTTOM: 0.3em;
+    --BUTTON-PADDING: var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT) 
+                      var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT);
     --CANVAS-MAX-HEIGHT: 300px;
     --CANVAS-MAX-WIDTH: 400px;
     --FORM-MAX-SIZE: 80%;
@@ -145,8 +150,8 @@ main {
     border: var(--BUTTON-BORDER);
     margin-bottom: var(--BUTTON-MARGIN);
     margin-top: var(--BUTTON-MARGIN);
-    padding-left: var(--BUTTON-PADDING);
-    padding-right: var(--BUTTON-PADDING);
+    padding: var(--BUTTON-PADDING);
+    font-family: var(--BUTTON-FONT-FAMILY);
 }
 
 .canvas__donutChart {

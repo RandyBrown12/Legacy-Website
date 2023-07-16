@@ -24,6 +24,11 @@ optionBox.addEventListener("change", selectedOption);
 
 function addForm() 
 {
+    if(advancedForm.style.display === "block") 
+    {
+        advancedForm.style.display = "none";
+        return;
+    }
     advancedForm.style.display = "block";
 }
 
