@@ -15,14 +15,20 @@
 <body>
     <nav id="startPage">
         <header class="header">
-            <ul class="header__ul header__left-side">
-                <a href="https://youtu.be/kUMe1FH4CHE"><img class="header__icon" src="img/money-icon.png" alt="Money Icon" width="100" height="100"></a>
-                <li>Investment Calculator</li>
+        <ul class="header__ul">
+            <a href="https://youtu.be/8mAITcNt710"><img class="header__icon" src="img/money-icon.png" alt="Money Icon" width="100" height="100"></a>
+            <li>Investment Calculator</li>
+            <li><a class="header__link" href="index.html">About Me</a></li>
+            <li><a class="header__link" href="project.html">Other Projects</a></li>
+        </ul>
+<!--             <ul class="header__ul header__left-side">
+                <a class="" href="https://youtu.be/kUMe1FH4CHE"><img class="header__icon" src="img/money-icon.png" alt="Money Icon" width="75" height="75"></a>
+                <li>Invest Calculator</li>
             </ul>
             <ul class="header__ul header__right-side">
                 <li><a class="header__link" href="index.html">About Me</a></li>
                 <li><a class="header__link" href="project.html">Other Projects</a></li>
-            </ul>
+            </ul> -->
         </header>
     </nav>
     <main>
@@ -34,7 +40,7 @@
             <div class="center">
                 <input type="text" id="salary" class="center removeHover form__input" maxlength="9"
                     placeholder="Ex: 60000">
-                <select name="timeConverter" id="timeConverter">
+                <select class="selectDropDown" name="timeConverter" id="timeConverter">
                     <option value="hour">Hour</option>
                     <option value="week">Week</option>
                     <option value="month">Month</option>
@@ -42,7 +48,7 @@
                 </select>
             </div>
             <label for="salary" class="textCenter wrap">Select Conversion Rate After Time: </label>
-            <select class="center" name="afterCalculationTime" id="afterCalculationTime">
+            <select class="center selectDropDown" name="afterCalculationTime" id="afterCalculationTime">
                 <option value="year">Year</option>
                 <option value="month">Month</option>
                 <option value="week">Week</option>
