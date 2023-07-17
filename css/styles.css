@@ -40,20 +40,23 @@
 
     /* SIZE */
     --BUTTON-MARGIN: 1.2em;
+    --BUTTON-MARGIN-TOP: 0.6em;
+    --BUTTON-MARGIN-BOTTOM: 0.5em;
+    --BUTTON-MARGIN-TOP-AND-BOTTOM: var(--BUTTON-MARGIN-TOP) 0.0em var(--BUTTON-MARGIN-BOTTOM) 0.0em;
     --BUTTON-PADDING-LEFT-AND-RIGHT: 1.0em;
     --BUTTON-PADDING-TOP-AND-BOTTOM: 0.3em;
     --BUTTON-PADDING: var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT) 
                       var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT);
     --CANVAS-MAX-HEIGHT: 300px;
     --CANVAS-MAX-WIDTH: 400px;
-    --FORM-MAX-SIZE: 80%;
+    --FORM-MAX-SIZE: 85%;
     --FORM-WIDTH-SIZE: 50%;
     --HEADER-ICON-GAP: 1.7em;
     --HEADER-ICON-MARGIN: -0.7em;
     --HEADER-LETTER-SPACING: 0.03em;
     --HEADER-LINE-HEIGHT: 100%;
     --HEADER-LINK-GAP: 1.2rem;
-    --HEADER-PADDING: 1.0em;
+    --HEADER-PADDING: 0.7em;
     --HEADER-GAP: 0.7em;
     --HEADER-SIDE-PADDING: 7px;
     --HEADER-TEXT-FONT-SIZE-CAP: 15px;
@@ -79,7 +82,6 @@ body {
 .header {
     background-color: var(--HEADER-COLOR);
     border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
-    flex-wrap: wrap;
     font-family: var(--HEADER-FONT-FAMILY);
     font-size: max(var(--HEADER-TEXT-FONT-SIZE-CAP), var(--FONT-SIZE));
     font-weight: bolder;
@@ -151,8 +153,7 @@ main {
 .calculateForm__button {
     background-color: var(--BUTTON-COLOR);
     border: var(--BUTTON-BORDER);
-    margin-bottom: var(--BUTTON-MARGIN);
-    margin-top: var(--BUTTON-MARGIN);
+    margin: var(--BUTTON-MARGIN-TOP-AND-BOTTOM);
     padding: var(--BUTTON-PADDING);
     font-family: var(--BUTTON-FONT-FAMILY);
     color: var(--BUTTON-TEXT-COLOR);

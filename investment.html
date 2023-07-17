@@ -33,7 +33,7 @@
     </nav>
     <main>
         <h2 class="textCenter spacing">Calculate your take home pay for the job</h2>
-        <form class="form__bg calculateForm">
+        <form class="form__bg calculateForm spacing">
             <label for="hours" class="textCenter wrap">Hours planning to Work per week: </label>
             <input type="text" id="hours" class="center removeHover form__input" maxlength="3" placeholder="Ex: 15">
             <label for="salary" class="textCenter wrap">Expected Salary before taxes: </label>
@@ -48,7 +48,7 @@
                 </select>
             </div>
             <label for="salary" class="textCenter wrap">Select Conversion Rate After Time: </label>
-            <select class="center selectDropDown" name="afterCalculationTime" id="afterCalculationTime">
+            <select class="center selectDropDown spacing" name="afterCalculationTime" id="afterCalculationTime">
                 <option value="year">Year</option>
                 <option value="month">Month</option>
                 <option value="week">Week</option>
@@ -59,10 +59,10 @@
                 <button type="button" id="advanced" class="calculateForm__button" name="advanced">Advanced</button>
             </div>
         </form>
-        <form id="advancedForm" class="form__bg calculateForm hide">
+        <form id="advancedForm" class="form__bg calculateForm hide spacing">
             <p class="center">Advanced Options:</p>
         </form>
-        <form id="afterCalculation" class="form__bg calculateForm hide">
+        <form id="afterCalculation" class="form__bg calculateForm hide spacing">
             <p id="outputCalculator" class="center"></p>
         </form>
         <canvas height="600" width="800" class="canvas__donutChart" id="donutChart"></canvas>

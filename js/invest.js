@@ -13,8 +13,7 @@ const donutChartCanvas = document.getElementById("donutChart");
 const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
-const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
-const yearToConversionRatio = new Map([["Year", 1],["Month", 12],["Week", 52.1429]]);
+const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 12], ["Year", 1]]);
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
@@ -67,8 +66,8 @@ function takeHomePay()
     incomeAfterTax = incomeBeforeTax - (federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
     incomeAfterTax = incomeAfterTax.toFixed(2);
 
-    outputCalculatorForm.innerHTML = "Before Tax: $" + (incomeBeforeTax / yearToConversionRatio.get(afterCalculationTimeOption)).toFixed(2) + "/" + afterCalculationTimeOption;
-    outputCalculatorForm.innerHTML += "<br>After Tax: $" + (incomeAfterTax / yearToConversionRatio.get(afterCalculationTimeOption)).toFixed(2) + "/"+ afterCalculationTimeOption;
+    outputCalculatorForm.innerHTML = "Before Tax: $" + (incomeBeforeTax / conversionRatiosToYear.get(afterCalculationTimeOption)).toFixed(2) + "/" + afterCalculationTimeOption;
+    outputCalculatorForm.innerHTML += "<br>After Tax: $" + (incomeAfterTax / conversionRatiosToYear.get(afterCalculationTimeOption)).toFixed(2) + "/"+ afterCalculationTimeOption;
     afterCalculationInfo.style.display = afterCalculationForm.style.display = "block";
 
     let allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, incomeAfterTax];
