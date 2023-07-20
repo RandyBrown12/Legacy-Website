@@ -13,6 +13,7 @@ const donutChartCanvas = document.getElementById("donutChart");
 const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
+const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 12], ["Year", 1]]);
 
 // Events
@@ -61,7 +62,7 @@ function takeHomePay()
 
     federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal");
     stateTaxedIncome = getTaxRate(incomeBeforeTax, "State");
-    ficaTaxedIncome = getFicaTaxRate(incomeBeforeTax);
+    ficaTaxedIncome = getFicaTaxRate(incomeBeforeTax, selfEmployeedCheckBox.checked);
 
     incomeAfterTax = incomeBeforeTax - (federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
     incomeAfterTax = incomeAfterTax.toFixed(2);
@@ -97,7 +98,6 @@ let myChart = null
 function createDonutChart(allTaxes, incomeBeforeTax) {
     if(myChart !== null) {
         myChart.destroy()
-        donutChartCanvas.style.display = 'none';
     }
 
     myChart = new Chart(donutChartCanvas, {

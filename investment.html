@@ -21,14 +21,6 @@
             <li><a class="header__link" href="index.html">About Me</a></li>
             <li><a class="header__link" href="project.html">Other Projects</a></li>
         </ul>
-<!--             <ul class="header__ul header__left-side">
-                <a class="" href="https://youtu.be/kUMe1FH4CHE"><img class="header__icon" src="img/money-icon.png" alt="Money Icon" width="75" height="75"></a>
-                <li>Invest Calculator</li>
-            </ul>
-            <ul class="header__ul header__right-side">
-                <li><a class="header__link" href="index.html">About Me</a></li>
-                <li><a class="header__link" href="project.html">Other Projects</a></li>
-            </ul> -->
         </header>
     </nav>
     <main>
@@ -61,12 +53,16 @@
         </form>
         <form id="advancedForm" class="form__bg calculateForm hide spacing">
             <p class="center">Advanced Options:</p>
+            <div class="center">
+                <input type="checkbox" name="selfEmployeed" id="selfEmployeed">
+                <label for="selfEmployeed">Self Employeed?</label>
+            </div>
         </form>
         <form id="afterCalculation" class="form__bg calculateForm hide spacing">
             <p id="outputCalculator" class="center"></p>
         </form>
         <div class="canvas__center">
-            <canvas height="600" width="600" class="canvas__donutChart hide" id="donutChart"></canvas>
+            <canvas height="400" width="700" class="canvas__donutChart hide" id="donutChart"></canvas>
         </div>
 
         <p id="afterCalculationInfo" class="textCenter spacing hide">

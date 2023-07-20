@@ -47,7 +47,7 @@
     --BUTTON-PADDING-TOP-AND-BOTTOM: 0.3em;
     --BUTTON-PADDING: var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT) 
                       var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT);
-    --CANVAS-CENTER-SIZE: 45%;
+    --CANVAS-CENTER-SIZE: 85%;
     --FORM-MAX-SIZE: 85%;
     --FORM-WIDTH-SIZE: 50%;
     --HEADER-ICON-GAP: 1.7em;
@@ -236,5 +236,9 @@ main {
         gap: var(--HEADER-ICON-GAP);
         margin: var(--HEADER-ICON-MARGIN);
         object-fit: contain;
+    }
+
+    :root {
+        --CANVAS-CENTER-SIZE: 45%;
     }
 }
