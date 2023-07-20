@@ -95,19 +95,11 @@ function selectedOption() {
 
 let myChart = null
 function createDonutChart(allTaxes, incomeBeforeTax) {
-    let chartFontSize = 0;
     if(myChart !== null) {
         myChart.destroy()
         donutChartCanvas.style.display = 'none';
     }
 
-    if(donutChartCanvas.offsetWidth === 650 && donutChartCanvas.offsetHeight === 500) {
-        chartFontSize = 500;
-    } else if(donutChartCanvas.offsetWidth === 400 && donutChartCanvas.offsetHeight === 300) {
-        chartFontSize = 150;
-        donutChartCanvas.style.display = 'none';
-    }
-    
     myChart = new Chart(donutChartCanvas, {
         type: 'doughnut',
         data: {
@@ -120,7 +112,7 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
         },
         options: 
         {
-            responsive: false, maintainAspectRatio: true,
+            responsive: true, maintainAspectRatio: false,
             title: 
             {
                 display: true, 

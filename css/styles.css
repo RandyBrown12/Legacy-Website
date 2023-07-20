@@ -47,8 +47,7 @@
     --BUTTON-PADDING-TOP-AND-BOTTOM: 0.3em;
     --BUTTON-PADDING: var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT) 
                       var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT);
-    --CANVAS-MAX-HEIGHT: 300px;
-    --CANVAS-MAX-WIDTH: 400px;
+    --CANVAS-CENTER-SIZE: 45%;
     --FORM-MAX-SIZE: 85%;
     --FORM-WIDTH-SIZE: 50%;
     --HEADER-ICON-GAP: 1.7em;
@@ -163,9 +162,6 @@ main {
 .canvas__donutChart {
     background-color: var(--CHART-BG-COLOR);
     border: var(--INPUT-BORDER);
-    display: none;
-    height: var(--CANVAS-MAX-HEIGHT);
-    margin: var(--MARGIN-AUTO-LEFT-AND-RIGHT);
     width: var(--CANVAS-MAX-WIDTH);
 }
 
@@ -200,6 +196,11 @@ main {
     width: var(--FORM-WIDTH-SIZE);
 }
 
+.canvas__center {
+    margin: auto;
+    width: var(--CANVAS-CENTER-SIZE);
+}
+
 .center__photo {
     margin: var(--MARGIN-AUTO-LEFT-AND-RIGHT);
     display: block;
@@ -228,11 +229,6 @@ main {
 @media screen and (min-width: 670px) {
     .calculateForm {
         --FORM-MAX-SIZE: 50%;
-    }
-
-    .canvas__donutChart {
-        --CANVAS-MAX-WIDTH: 650px;
-        --CANVAS-MAX-HEIGHT: 500px;
     }
 
     .header__icon {
