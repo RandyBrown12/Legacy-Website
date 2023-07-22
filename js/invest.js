@@ -14,7 +14,7 @@ const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
 const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
-const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 12], ["Year", 1]]);
+const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
@@ -45,8 +45,10 @@ function takeHomePay()
             throw "Please enter numbers in the textboxes!";
         } else if(incomeBeforeTax <= 0 || (salaryTimeOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
+        } else if(salaryTimeOption === "Hour" && workHours > 168) {
+            throw "You can't work over 168 hours every week!";
         }
-        reset();
+
     } catch (e) {
         window.alert(e);
         return;
