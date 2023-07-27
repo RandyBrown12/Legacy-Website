@@ -15,23 +15,33 @@ const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
 const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
 const filingStatusDropDown = document.getElementById("filingStatus");
+const debtCalculatorForm = document.getElementById("debtCalculator");
+const isDebtCalculatorForm = document.getElementById("isDebtCalculator");
+
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", reset);
-advancedFormButton.addEventListener("click", addForm);
+advancedFormButton.addEventListener("click", function() { addForm(advancedForm) });
 optionBox.addEventListener("change", selectedOption);
+isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
 
-function addForm() 
+function addForm(form) 
 {
-    if(advancedForm.style.display === "block") 
+    if(form.style.display === "block") 
     {
-        advancedForm.style.display = "none";
+        form.style.display = "none";
         return;
     }
-    advancedForm.style.display = "block";
+    form.style.display = "block";
 }
+
+/* function activateForm() {
+    if(isDebtCalculatorForm.checked) {
+
+    }
+} */
 
 function takeHomePay() 
 {

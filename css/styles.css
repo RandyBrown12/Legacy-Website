@@ -49,6 +49,7 @@
                       var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT);
     --CANVAS-CENTER-SIZE: 85%;
     --FORM-MAX-SIZE: 85%;
+    --FORM-WIDTH-SMALL-SIZE: 20%;
     --FORM-WIDTH-SIZE: 50%;
     --HEADER-ICON-GAP: 1.7em;
     --HEADER-ICON-MARGIN: -0.7em;
@@ -197,6 +198,10 @@ main {
     width: var(--FORM-WIDTH-SIZE);
 }
 
+.center__small {
+    margin: auto;
+    width: var(--FORM-WIDTH-SMALL-SIZE);
+}
 .canvas__center {
     margin: auto;
     width: var(--CANVAS-CENTER-SIZE);
@@ -212,7 +217,7 @@ main {
     margin-top: var(--HEIGHT-SPACING);
 }
 
-.large__spacing {
+.spacing__large {
     margin-bottom: var(--LARGE-HEIGHT-SPACING);
     margin-top: var(--LARGE-HEIGHT-SPACING);
 }
