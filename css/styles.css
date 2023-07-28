@@ -36,6 +36,7 @@
     --BUTTON-TEXT-COLOR: #E7E7E7;
     --FORM-BORDER-RADIUS: 15px;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
+    --HR-BORDER: 3px var(--BORDER-STYLE) var(--BORDER-COLOR);
     --INPUT-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
 
     /* SIZE */
@@ -228,6 +229,10 @@ main {
 
 .hide {
     display: none;
+}
+
+.border {
+    border: var(--HR-BORDER);
 }
 
 /* Media Query for small phone */
