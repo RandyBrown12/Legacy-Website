@@ -57,7 +57,6 @@ function addDebtToList() {
         return;
     }
 
-
     if(debtBulletPointsList.length + 1 <= 5) {
         debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
         ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>";
@@ -65,13 +64,13 @@ function addDebtToList() {
         window.alert("Max Debts is 5!");
     }
 
-    window.alert(debtBulletPointsList.length - 1);
-    for(i = 0;i < debtBulletPointsList.length; i++)
+    for(let i = 0;i < debtBulletPointsList.length; i++)
     {
-        debtBulletPointsList[debtBulletPointsList.length].addEventListener('click', function () {
-            window.alert('Clicked on: ' + debtBulletPointsList[debtBulletPointsList.length].innerText);
+        debtBulletPointsList[i].addEventListener('click', function () {
+            window.alert('Clicked on: ' + debtBulletPointsList[i].innerText);
         });
     }
+
 }
 
 function takeHomePay() 

@@ -235,6 +235,12 @@ main {
     border: var(--HR-BORDER);
 }
 
+.removeBulletPointIcons {
+    list-style-position: inside;
+}
+.removeBulletPointIcons li::marker {
+    content: "❌";
+}
 /* Media Query for small phone */
 /* Outside of min width */
 @media screen and (min-width: 670px) {
