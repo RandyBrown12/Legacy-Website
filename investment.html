@@ -34,21 +34,21 @@
                 <input type="text" id="salary" class="center removeHover form__input" maxlength="9"
                     placeholder="Ex: 60000">
                 <select class="selectDropDown" name="timeConverter" id="timeConverter">
-                    <option value="Hour">Hour</option>
-                    <option value="Week">Week</option>
-                    <option value="Biweek">Biweek</option>
-                    <option value="Semimonth">Semimonth</option>
-                    <option value="Month">Month</option>
-                    <option value="Year">Year</option>
+                    <option value="hour">Hour</option>
+                    <option value="week">Week</option>
+                    <option value="biweek">Biweek</option>
+                    <option value="semimonth">Semimonth</option>
+                    <option value="month">Month</option>
+                    <option value="year">Year</option>
                 </select>
             </div>
             <label for="salary" class="textCenter wrap">Select Conversion Rate After Time: </label>
             <select class="center selectDropDown spacing" name="afterCalculationTime" id="afterCalculationTime">
-                <option value="Year">Year</option>
-                <option value="Month">Month</option>
-                <option value="Semimonth">Semimonth</option>
-                <option value="Biweek">Biweek</option>
-                <option value="Week">Week</option>
+                <option value="year">Year</option>
+                <option value="month">Month</option>
+                <option value="semimonth">Semimonth</option>
+                <option value="biweek">Biweek</option>
+                <option value="week">Week</option>
             </select>
             <div class="center">
                 <button type="button" id="compute" class="calculateForm__button" name="compute">Calculate Pay</button>
@@ -62,42 +62,6 @@
                 <input type="checkbox" name="selfEmployeed" id="selfEmployeed">
                 <label for="selfEmployeed">Self Employeed?</label>
             </div>
-            <div class="center">
-                <label for="filingStatus">Filing Status:</label>
-                <select id="filingStatus" class="selectDropDown" name="timeConverter">
-                    <option value="Single">Single</option>
-                    <option value="MFJ">Married Filing Jointly</option>
-                    <option value="MFS">Married Filing Seperately</option>
-                    <option value="HOH">Head Of Household</option>
-                </select>
-            </div>
-            <div class="center">
-                <input type="checkbox" name="isDebtCalculator" id="isDebtCalculator">
-                <label for="isDebtCalculator">Add Debt Calculator?</label>
-            </div>
-        </form>
-        <!--Add hide back once finished.-->
-        <form id="debtCalculator" class="form__bg calculateForm spacing">
-            <p class="center">Debt Calculator: <br> Find out how fast debt can be paid off.</p>
-            <p class="center">Add Debts:</p>
-            <div class="center">
-                <label for="principal" class="textCenter wrap">Principal: </label>
-                <input type="text" id="principal" class="center removeHover form__input" maxlength="9"
-                    placeholder="Ex: 15000">
-            </div>
-            <div class="center">
-                <label for="interest" class="textCenter wrap">Interest: </label>
-                <input type="text" id="interest" class="center removeHover form__input" maxlength="6"
-                    placeholder="Ex: 4.05%">
-            </div>
-            <div class="center">
-                <label for="mMP" class="textCenter wrap">Monthly Minimum <br> Payments: </label>
-                <input type="text" id="mMP" class="center removeHover form__input" maxlength="9" placeholder="Ex: 500">
-            </div>
-            <button type="button" id="addDebt" class="calculateForm__button center__small spacing" name="addDebt">Add Debt</button>
-            <hr class="border">
-            <ul id="debtInfo" class="removeBulletPointIcons center">
-            </ul>
         </form>
         <form id="afterCalculation" class="form__bg calculateForm hide spacing">
             <p id="outputCalculator" class="center"></p>

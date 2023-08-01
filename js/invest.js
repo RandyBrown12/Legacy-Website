@@ -14,15 +14,6 @@ const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
 const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
-const filingStatusDropDown = document.getElementById("filingStatus");
-const debtCalculatorForm = document.getElementById("debtCalculator");
-const isDebtCalculatorForm = document.getElementById("isDebtCalculator");
-const addDebtButton = document.getElementById("addDebt");
-const debtInfoList = document.getElementById("debtInfo");
-const principalInput = document.getElementById("principal");
-const interestInput = document.getElementById("interest");
-const mMPInput = document.getElementById("mMP");
-let debtBulletPointsList = debtInfoList.getElementsByTagName("li");
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 const debtInfoArrays = new Map([]);
 let debtCount = 0;
@@ -76,13 +67,11 @@ function addDebtToList() {
 function takeHomePay() 
 {
     let federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0, incomeAfterTax = 0;
-    let salaryTimeOption = timeConverter.value;
-    let afterCalculationTimeOption = afterCalcuationFormDropDown.value;
-    let filingStatus = filingStatusDropDown.value;
+    let salaryTimeOption = timeConverter.options[timeConverter.selectedIndex].text;
+    let afterCalculationTimeOption = afterCalcuationFormDropDown.options[afterCalcuationFormDropDown.selectedIndex].text;
 
     let workHours = parseFloat(hoursInput.value);
     let incomeBeforeTax = parseFloat(salaryInput.value);
-
     try {
         if ((isNaN(workHours) && salaryTimeOption === "Hour") || isNaN(incomeBeforeTax)) {
             throw "Please enter numbers in the textboxes!";
@@ -103,11 +92,10 @@ function takeHomePay()
     }
     
     incomeBeforeTax *= conversionRatiosToYear.get(salaryTimeOption);
-    setBracketMaximum(incomeBeforeTax, filingStatus);
-/*     setBracketMaximum(incomeBeforeTax); */
-    federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal" + filingStatus);
-    filingStatus = (filingStatus === "Single" || filingStatus === "MFS") ? "Seperate" : "Jointly";
-    stateTaxedIncome = getTaxRate(incomeBeforeTax, "State" + filingStatus);
+    setBracketMaximum(incomeBeforeTax);
+
+    federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal");
+    stateTaxedIncome = getTaxRate(incomeBeforeTax, "State");
     ficaTaxedIncome = getFicaTaxRate(incomeBeforeTax, selfEmployeedCheckBox.checked);
 
     incomeAfterTax = incomeBeforeTax - (federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
