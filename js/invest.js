@@ -22,18 +22,19 @@ const debtInfoList = document.getElementById("debtInfo");
 const principalInput = document.getElementById("principal");
 const interestInput = document.getElementById("interest");
 const mMPInput = document.getElementById("mMP");
+const testButton = document.getElementById("test");
 let debtBulletPointsList = debtInfoList.getElementsByTagName("li");
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
-const debtInfoArrays = new Map([]);
+const debtInfoArrays = [];
 let debtCount = 0;
-
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", reset);
 advancedFormButton.addEventListener("click", function() { addForm(advancedForm) });
 optionBox.addEventListener("change", selectedOption);
 isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
-addDebtButton.addEventListener("click", addDebtToList)
+addDebtButton.addEventListener("click", addDebtToList);
+testButton.addEventListener("click", testItems);
 
 function addForm(form) 
 {
@@ -64,13 +65,21 @@ function addDebtToList() {
         window.alert("Max Debts is 5!");
     }
 
+    debtInfoArrays.push([principal, interest, mmp]);
     for(let i = 0;i < debtBulletPointsList.length; i++)
     {
         debtBulletPointsList[i].addEventListener('click', function () {
             window.alert('Clicked on: ' + debtBulletPointsList[i].innerText);
         });
     }
+}
 
+function testItems() {
+    console.log(debtBulletPointsList);
+    for(const [item1, item2, item3] of debtInfoArrays)
+    {
+        console.log(`Principal: ${item1} Interest: ${item2} MMP: ${item3}`);
+    }
 }
 
 function takeHomePay() 
@@ -79,7 +88,6 @@ function takeHomePay()
     let salaryTimeOption = timeConverter.value;
     let afterCalculationTimeOption = afterCalcuationFormDropDown.value;
     let filingStatus = filingStatusDropDown.value;
-
     let workHours = parseFloat(hoursInput.value);
     let incomeBeforeTax = parseFloat(salaryInput.value);
 
