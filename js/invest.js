@@ -15,22 +15,62 @@ const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
 const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
 const filingStatusDropDown = document.getElementById("filingStatus");
+const debtCalculatorForm = document.getElementById("debtCalculator");
+const isDebtCalculatorForm = document.getElementById("isDebtCalculator");
+const addDebtButton = document.getElementById("addDebt");
+const debtInfoList = document.getElementById("debtInfo");
+const principalInput = document.getElementById("principal");
+const interestInput = document.getElementById("interest");
+const mMPInput = document.getElementById("mMP");
+let debtBulletPointsList = debtInfoList.getElementsByTagName("li");
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
+const debtInfoArrays = new Map([]);
+let debtCount = 0;
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", reset);
-advancedFormButton.addEventListener("click", addForm);
+advancedFormButton.addEventListener("click", function() { addForm(advancedForm) });
 optionBox.addEventListener("change", selectedOption);
+isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
+addDebtButton.addEventListener("click", addDebtToList)
 
-function addForm() 
+function addForm(form) 
 {
-    if(advancedForm.style.display === "block") 
+    if(form.style.display === "block") 
     {
-        advancedForm.style.display = "none";
+        form.style.display = "none";
         return;
     }
-    advancedForm.style.display = "block";
+    form.style.display = "block";
+}
+
+function addDebtToList() {
+    let principal = parseFloat(principalInput.value), interest = parseFloat(interestInput.value), mmp = parseFloat(mMPInput.value);
+    try {
+        if(isNaN(principal) || isNaN(interest) || isNaN(mmp))
+        {
+            throw "Debt Calculator does not have correct format!";
+        }
+    } catch (exception) {
+        window.alert(exception)
+        return;
+    }
+
+    if(debtBulletPointsList.length + 1 <= 5) {
+        debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
+        ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>";
+    } else {
+        window.alert("Max Debts is 5!");
+    }
+
+    for(let i = 0;i < debtBulletPointsList.length; i++)
+    {
+        debtBulletPointsList[i].addEventListener('click', function () {
+            window.alert('Clicked on: ' + debtBulletPointsList[i].innerText);
+        });
+    }
+
 }
 
 function takeHomePay() 
@@ -52,8 +92,8 @@ function takeHomePay()
             throw "You can't work over 168 hours every week!";
         }
 
-    } catch (e) {
-        window.alert(e);
+    } catch (exception) {
+        window.alert(exception);
         return;
     }
 
