@@ -173,12 +173,11 @@ main {
 
 .form__input {
     border: var(--INPUT-BORDER);
-    padding-left: 2.25px;
 }
 
 .form__input::placeholder {
     font: var(--INPUT-FONT-SIZE) var(--BODY-FONT-FAMILY);
-/*     padding-bottom: var(--PLACEHOLDER-TEXT-MOVE); */
+    padding-bottom: var(--PLACEHOLDER-TEXT-MOVE);
 }
 
 .selectDropDown {
