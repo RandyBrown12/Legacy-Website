@@ -25,6 +25,7 @@ const mMPInput = document.getElementById("mMP");
 const testButton = document.getElementById("test");
 const debtBulletPointsList = document.getElementById("debtInfo");
 /* let debtBulletPointsList = debtInfoList.getElementsByTagName("li"); */
+
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 const debtInfoArrays = [];
 let debtCount = 0;
@@ -95,8 +96,7 @@ function takeHomePay()
     let afterCalculationTimeOption = afterCalcuationFormDropDown.value;
     let filingStatus = filingStatusDropDown.value;
     let workHours = parseFloat(hoursInput.value);
-    let incomeBeforeTax = parseFloat(salaryInput.value);
-
+    let incomeBeforeTax = parseFloat(salaryInput.value); 
     try {
         if ((isNaN(workHours) && salaryTimeOption === "Hour") || isNaN(incomeBeforeTax)) {
             throw "Please enter numbers in the textboxes!";
