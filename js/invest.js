@@ -13,8 +13,8 @@ const donutChartCanvas = document.getElementById("donutChart");
 const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
-const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 4.34524], ["Year", 1]]);
-const yearToConversionRatio = new Map([["Year", 1],["Month", 12],["Week", 52.1429]]);
+const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
+const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
@@ -62,7 +62,7 @@ function takeHomePay()
 
     federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal");
     stateTaxedIncome = getTaxRate(incomeBeforeTax, "State");
-    ficaTaxedIncome = getFicaTaxRate(incomeBeforeTax);
+    ficaTaxedIncome = getFicaTaxRate(incomeBeforeTax, selfEmployeedCheckBox.checked);
 
     incomeAfterTax = incomeBeforeTax - (federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
     incomeAfterTax = incomeAfterTax.toFixed(2);

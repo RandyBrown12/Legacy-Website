@@ -43,14 +43,18 @@
                 <select class="selectDropDown" name="timeConverter" id="timeConverter">
                     <option value="hour">Hour</option>
                     <option value="week">Week</option>
+                    <option value="biweek">Biweek</option>
+                    <option value="semimonth">Semimonth</option>
                     <option value="month">Month</option>
                     <option value="year">Year</option>
                 </select>
             </div>
             <label for="salary" class="textCenter wrap">Select Conversion Rate After Time: </label>
-            <select class="center selectDropDown" name="afterCalculationTime" id="afterCalculationTime">
+            <select class="center selectDropDown spacing" name="afterCalculationTime" id="afterCalculationTime">
                 <option value="year">Year</option>
                 <option value="month">Month</option>
+                <option value="semimonth">Semimonth</option>
+                <option value="biweek">Biweek</option>
                 <option value="week">Week</option>
             </select>
             <div class="center">
@@ -61,6 +65,10 @@
         </form>
         <form id="advancedForm" class="form__bg calculateForm hide">
             <p class="center">Advanced Options:</p>
+            <div class="center">
+                <input type="checkbox" name="selfEmployeed" id="selfEmployeed">
+                <label for="selfEmployeed">Self Employeed?</label>
+            </div>
         </form>
         <form id="afterCalculation" class="form__bg calculateForm hide">
             <p id="outputCalculator" class="center"></p>
