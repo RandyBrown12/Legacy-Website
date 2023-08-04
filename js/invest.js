@@ -23,7 +23,8 @@ const principalInput = document.getElementById("principal");
 const interestInput = document.getElementById("interest");
 const mMPInput = document.getElementById("mMP");
 const testButton = document.getElementById("test");
-let debtBulletPointsList = debtInfoList.getElementsByTagName("li");
+const debtBulletPointsList = document.getElementById("debtInfo");
+/* let debtBulletPointsList = debtInfoList.getElementsByTagName("li"); */
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 const debtInfoArrays = [];
 let debtCount = 0;
@@ -46,6 +47,7 @@ function addForm(form)
     form.style.display = "block";
 }
 
+let count = 1;
 function addDebtToList() {
     let principal = parseFloat(principalInput.value), interest = parseFloat(interestInput.value), mmp = parseFloat(mMPInput.value);
     try {
@@ -57,24 +59,27 @@ function addDebtToList() {
         window.alert(exception)
         return;
     }
-
-    if(debtBulletPointsList.length + 1 <= 5) {
-        debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
-        ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>";
+    
+    if(debtBulletPointsList.childNodes.length <= 5) {
+        const listElement = document.createElement("li");
+        listElement.textContent = `Principal: ${principal} Interest: ${interest} MMP: ${mmp}`;
+/*         debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
+        ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>"; */
+        listElement.addEventListener('click', function () {
+            window.alert('Clicked on: ' + listElement.innerText);
+            debtInfoArrays.splice(debtBulletPointsList.childNodes.length, 1);
+            this.parentNode.removeChild(this);
+        });
+        debtBulletPointsList.append(listElement);
+        debtInfoArrays.push([principal, interest, mmp]);
     } else {
         window.alert("Max Debts is 5!");
-    }
-
-    debtInfoArrays.push([principal, interest, mmp]);
-    for(let i = 0;i < debtBulletPointsList.length; i++)
-    {
-        debtBulletPointsList[i].addEventListener('click', function () {
-            window.alert('Clicked on: ' + debtBulletPointsList[i].innerText);
-        });
+        return;
     }
 }
 
-function testItems() {
+function testItems() 
+{
     console.log(debtBulletPointsList);
     for(const [item1, item2, item3] of debtInfoArrays)
     {
