@@ -14,41 +14,100 @@ const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
 const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
-const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
+const filingStatusDropDown = document.getElementById("filingStatus");
+const debtCalculatorForm = document.getElementById("debtCalculator");
+const isDebtCalculatorForm = document.getElementById("isDebtCalculator");
+const addDebtButton = document.getElementById("addDebt");
+const debtInfoList = document.getElementById("debtInfo");
+const principalInput = document.getElementById("principal");
+const interestInput = document.getElementById("interest");
+const mMPInput = document.getElementById("mMP");
+const testButton = document.getElementById("test");
+const debtBulletPointsList = document.getElementById("debtInfo");
+/* let debtBulletPointsList = debtInfoList.getElementsByTagName("li"); */
 
+const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
+const debtInfoArrays = [];
+let debtCount = 0;
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", reset);
-advancedFormButton.addEventListener("click", addForm);
+advancedFormButton.addEventListener("click", function() { addForm(advancedForm) });
 optionBox.addEventListener("change", selectedOption);
+isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
+addDebtButton.addEventListener("click", addDebtToList);
+testButton.addEventListener("click", testItems);
 
-function addForm() 
+function addForm(form) 
 {
-    if(advancedForm.style.display === "block") 
+    if(form.style.display === "block") 
     {
-        advancedForm.style.display = "none";
+        form.style.display = "none";
         return;
     }
-    advancedForm.style.display = "block";
+    form.style.display = "block";
+}
+
+let count = 1;
+function addDebtToList() {
+    let principal = parseFloat(principalInput.value), interest = parseFloat(interestInput.value), mmp = parseFloat(mMPInput.value);
+    try {
+        if(isNaN(principal) || isNaN(interest) || isNaN(mmp))
+        {
+            throw "Debt Calculator does not have correct format!";
+        }
+    } catch (exception) {
+        window.alert(exception)
+        return;
+    }
+    
+    if(debtBulletPointsList.childNodes.length <= 5) {
+        let listElement = document.createElement("li");
+        listElement.textContent = `Principal: ${principal} Interest: ${interest} MMP: ${mmp}`;
+/*         debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
+        ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>"; */
+        listElement.addEventListener('click', function () {
+            window.alert('Clicked on: ' + listElement.innerText);
+            debtInfoArrays.splice(debtBulletPointsList.childNodes.length, 1);
+            listElement.parentNode.removeChild(listElement);
+            listElement = null;
+        });
+        debtBulletPointsList.append(listElement);
+        debtInfoArrays.push([principal, interest, mmp]);
+    } else {
+        window.alert("Max Debts is 5!");
+        return;
+    }
+}
+
+function testItems() 
+{
+    console.log(debtBulletPointsList);
+    for(const [item1, item2, item3] of debtInfoArrays)
+    {
+        console.log(`Principal: ${item1} Interest: ${item2} MMP: ${item3}`);
+    }
 }
 
 function takeHomePay() 
 {
     let federalTaxedIncome = 0, stateTaxedIncome = 0, ficaTaxedIncome = 0, incomeAfterTax = 0;
-    let salaryTimeOption = timeConverter.options[timeConverter.selectedIndex].text;
-    let afterCalculationTimeOption = afterCalcuationFormDropDown.options[afterCalcuationFormDropDown.selectedIndex].text;
-
+    let salaryTimeOption = timeConverter.value;
+    let afterCalculationTimeOption = afterCalcuationFormDropDown.value;
+    let filingStatus = filingStatusDropDown.value;
     let workHours = parseFloat(hoursInput.value);
-    let incomeBeforeTax = parseFloat(salaryInput.value);
+    let incomeBeforeTax = parseFloat(salaryInput.value); 
     try {
         if ((isNaN(workHours) && salaryTimeOption === "Hour") || isNaN(incomeBeforeTax)) {
             throw "Please enter numbers in the textboxes!";
         } else if(incomeBeforeTax <= 0 || (salaryTimeOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
+        } else if(salaryTimeOption === "Hour" && workHours > 168) {
+            throw "You can't work over 168 hours every week!";
         }
-        reset();
-    } catch (e) {
-        window.alert(e);
+
+    } catch (exception) {
+        window.alert(exception);
         return;
     }
 
@@ -58,17 +117,18 @@ function takeHomePay()
     }
     
     incomeBeforeTax *= conversionRatiosToYear.get(salaryTimeOption);
-    setBracketMaximum(incomeBeforeTax);
-
-    federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal");
-    stateTaxedIncome = getTaxRate(incomeBeforeTax, "State");
+    setBracketMaximum(incomeBeforeTax, filingStatus);
+/*     setBracketMaximum(incomeBeforeTax); */
+    federalTaxedIncome = getTaxRate(incomeBeforeTax, "Federal" + filingStatus);
+    filingStatus = (filingStatus === "Single" || filingStatus === "MFS") ? "Seperate" : "Jointly";
+    stateTaxedIncome = getTaxRate(incomeBeforeTax, "State" + filingStatus);
     ficaTaxedIncome = getFicaTaxRate(incomeBeforeTax, selfEmployeedCheckBox.checked);
 
     incomeAfterTax = incomeBeforeTax - (federalTaxedIncome + stateTaxedIncome + ficaTaxedIncome);
     incomeAfterTax = incomeAfterTax.toFixed(2);
 
-    outputCalculatorForm.innerHTML = "Before Tax: $" + (incomeBeforeTax / yearToConversionRatio.get(afterCalculationTimeOption)).toFixed(2) + "/" + afterCalculationTimeOption;
-    outputCalculatorForm.innerHTML += "<br>After Tax: $" + (incomeAfterTax / yearToConversionRatio.get(afterCalculationTimeOption)).toFixed(2) + "/"+ afterCalculationTimeOption;
+    outputCalculatorForm.innerHTML = "Before Tax: $" + (incomeBeforeTax / conversionRatiosToYear.get(afterCalculationTimeOption)).toFixed(2) + "/" + afterCalculationTimeOption;
+    outputCalculatorForm.innerHTML += "<br>After Tax: $" + (incomeAfterTax / conversionRatiosToYear.get(afterCalculationTimeOption)).toFixed(2) + "/"+ afterCalculationTimeOption;
     afterCalculationInfo.style.display = afterCalculationForm.style.display = "block";
 
     let allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, incomeAfterTax];
@@ -96,19 +156,10 @@ function selectedOption() {
 
 let myChart = null
 function createDonutChart(allTaxes, incomeBeforeTax) {
-    let chartFontSize = 0;
     if(myChart !== null) {
         myChart.destroy()
-        donutChartCanvas.style.display = 'none';
     }
 
-    if(donutChartCanvas.offsetWidth === 650 && donutChartCanvas.offsetHeight === 500) {
-        chartFontSize = 500;
-    } else if(donutChartCanvas.offsetWidth === 400 && donutChartCanvas.offsetHeight === 300) {
-        chartFontSize = 150;
-        donutChartCanvas.style.display = 'none';
-    }
-    
     myChart = new Chart(donutChartCanvas, {
         type: 'doughnut',
         data: {
@@ -121,7 +172,7 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
         },
         options: 
         {
-            responsive: false, maintainAspectRatio: true,
+            responsive: true, maintainAspectRatio: false,
             title: 
             {
                 display: true, 

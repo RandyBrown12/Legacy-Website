@@ -36,24 +36,28 @@
     --BUTTON-TEXT-COLOR: #E7E7E7;
     --FORM-BORDER-RADIUS: 15px;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
+    --HR-BORDER: 3px var(--BORDER-STYLE) var(--BORDER-COLOR);
     --INPUT-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
 
     /* SIZE */
     --BUTTON-MARGIN: 1.2em;
+    --BUTTON-MARGIN-TOP: 0.6em;
+    --BUTTON-MARGIN-BOTTOM: 0.5em;
+    --BUTTON-MARGIN-TOP-AND-BOTTOM: var(--BUTTON-MARGIN-TOP) 0.0em var(--BUTTON-MARGIN-BOTTOM) 0.0em;
     --BUTTON-PADDING-LEFT-AND-RIGHT: 1.0em;
     --BUTTON-PADDING-TOP-AND-BOTTOM: 0.3em;
     --BUTTON-PADDING: var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT) 
                       var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT);
-    --CANVAS-MAX-HEIGHT: 300px;
-    --CANVAS-MAX-WIDTH: 400px;
-    --FORM-MAX-SIZE: 80%;
+    --CANVAS-CENTER-SIZE: 85%;
+    --FORM-MAX-SIZE: 85%;
+    --FORM-WIDTH-SMALL-SIZE: 20%;
     --FORM-WIDTH-SIZE: 50%;
     --HEADER-ICON-GAP: 1.7em;
     --HEADER-ICON-MARGIN: -0.7em;
     --HEADER-LETTER-SPACING: 0.03em;
     --HEADER-LINE-HEIGHT: 100%;
     --HEADER-LINK-GAP: 1.2rem;
-    --HEADER-PADDING: 1.0em;
+    --HEADER-PADDING: 0.7em;
     --HEADER-GAP: 0.7em;
     --HEADER-SIDE-PADDING: 7px;
     --HEADER-TEXT-FONT-SIZE-CAP: 15px;
@@ -79,7 +83,6 @@ body {
 .header {
     background-color: var(--HEADER-COLOR);
     border: var(--BORDER-SIZE) var(--BORDER-STYLE) var(--BORDER-COLOR);
-    flex-wrap: wrap;
     font-family: var(--HEADER-FONT-FAMILY);
     font-size: max(var(--HEADER-TEXT-FONT-SIZE-CAP), var(--FONT-SIZE));
     font-weight: bolder;
@@ -151,8 +154,7 @@ main {
 .calculateForm__button {
     background-color: var(--BUTTON-COLOR);
     border: var(--BUTTON-BORDER);
-    margin-bottom: var(--BUTTON-MARGIN);
-    margin-top: var(--BUTTON-MARGIN);
+    margin: var(--BUTTON-MARGIN-TOP-AND-BOTTOM);
     padding: var(--BUTTON-PADDING);
     font-family: var(--BUTTON-FONT-FAMILY);
     color: var(--BUTTON-TEXT-COLOR);
@@ -162,9 +164,6 @@ main {
 .canvas__donutChart {
     background-color: var(--CHART-BG-COLOR);
     border: var(--INPUT-BORDER);
-    display: none;
-    height: var(--CANVAS-MAX-HEIGHT);
-    margin: var(--MARGIN-AUTO-LEFT-AND-RIGHT);
     width: var(--CANVAS-MAX-WIDTH);
 }
 
@@ -174,11 +173,12 @@ main {
 
 .form__input {
     border: var(--INPUT-BORDER);
+    padding-left: 2.25px;
 }
 
 .form__input::placeholder {
     font: var(--INPUT-FONT-SIZE) var(--BODY-FONT-FAMILY);
-    padding-bottom: var(--PLACEHOLDER-TEXT-MOVE);
+/*     padding-bottom: var(--PLACEHOLDER-TEXT-MOVE); */
 }
 
 .selectDropDown {
@@ -199,6 +199,15 @@ main {
     width: var(--FORM-WIDTH-SIZE);
 }
 
+.center__small {
+    margin: auto;
+    width: var(--FORM-WIDTH-SMALL-SIZE);
+}
+.canvas__center {
+    margin: auto;
+    width: var(--CANVAS-CENTER-SIZE);
+}
+
 .center__photo {
     margin: var(--MARGIN-AUTO-LEFT-AND-RIGHT);
     display: block;
@@ -209,7 +218,7 @@ main {
     margin-top: var(--HEIGHT-SPACING);
 }
 
-.large__spacing {
+.spacing__large {
     margin-bottom: var(--LARGE-HEIGHT-SPACING);
     margin-top: var(--LARGE-HEIGHT-SPACING);
 }
@@ -222,6 +231,16 @@ main {
     display: none;
 }
 
+.border {
+    border: var(--HR-BORDER);
+}
+
+.removeBulletPointIcons {
+    list-style-position: inside;
+}
+.removeBulletPointIcons li::marker {
+    content: "❌";
+}
 /* Media Query for small phone */
 /* Outside of min width */
 @media screen and (min-width: 670px) {
@@ -229,15 +248,14 @@ main {
         --FORM-MAX-SIZE: 50%;
     }
 
-    .canvas__donutChart {
-        --CANVAS-MAX-WIDTH: 650px;
-        --CANVAS-MAX-HEIGHT: 500px;
-    }
-
     .header__icon {
         display: block;
         gap: var(--HEADER-ICON-GAP);
         margin: var(--HEADER-ICON-MARGIN);
         object-fit: contain;
+    }
+
+    :root {
+        --CANVAS-CENTER-SIZE: 45%;
     }
 }
