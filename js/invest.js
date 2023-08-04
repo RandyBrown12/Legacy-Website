@@ -61,14 +61,15 @@ function addDebtToList() {
     }
     
     if(debtBulletPointsList.childNodes.length <= 5) {
-        const listElement = document.createElement("li");
+        let listElement = document.createElement("li");
         listElement.textContent = `Principal: ${principal} Interest: ${interest} MMP: ${mmp}`;
 /*         debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
         ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>"; */
         listElement.addEventListener('click', function () {
             window.alert('Clicked on: ' + listElement.innerText);
             debtInfoArrays.splice(debtBulletPointsList.childNodes.length, 1);
-            this.parentNode.removeChild(this);
+            listElement.parentNode.removeChild(listElement);
+            listElement = null;
         });
         debtBulletPointsList.append(listElement);
         debtInfoArrays.push([principal, interest, mmp]);
