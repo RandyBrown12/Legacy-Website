@@ -14,66 +14,22 @@ const advancedFormButton = document.getElementById("advanced");
 const advancedForm = document.getElementById("advancedForm");
 const afterCalcuationFormDropDown = document.getElementById("afterCalculationTime");
 const selfEmployeedCheckBox = document.getElementById("selfEmployeed");
-const conversionRatiosToYear = new Map([["Week", 52.1429], ["Month", 12], ["Year", 1]]);
+const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 
 // Events
 computeButton.addEventListener("click", takeHomePay);
 resetButton.addEventListener("click", reset);
-advancedFormButton.addEventListener("click", function() { addForm(advancedForm) });
+advancedFormButton.addEventListener("click", addForm);
 optionBox.addEventListener("change", selectedOption);
-isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
-addDebtButton.addEventListener("click", addDebtToList);
-testButton.addEventListener("click", testItems);
 
-function addForm(form) 
+function addForm() 
 {
-    if(form.style.display === "block") 
+    if(advancedForm.style.display === "block") 
     {
-        form.style.display = "none";
+        advancedForm.style.display = "none";
         return;
     }
-    form.style.display = "block";
-}
-
-let count = 1;
-function addDebtToList() {
-    let principal = parseFloat(principalInput.value), interest = parseFloat(interestInput.value), mmp = parseFloat(mMPInput.value);
-    try {
-        if(isNaN(principal) || isNaN(interest) || isNaN(mmp))
-        {
-            throw "Debt Calculator does not have correct format!";
-        }
-    } catch (exception) {
-        window.alert(exception)
-        return;
-    }
-    
-    if(debtBulletPointsList.childNodes.length <= 5) {
-        let listElement = document.createElement("li");
-        listElement.textContent = `Principal: ${principal} Interest: ${interest} MMP: ${mmp}`;
-/*         debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
-        ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>"; */
-        listElement.addEventListener('click', function () {
-            window.alert('Clicked on: ' + listElement.innerText);
-            debtInfoArrays.splice(debtBulletPointsList.childNodes.length, 1);
-            listElement.parentNode.removeChild(listElement);
-            listElement = null;
-        });
-        debtBulletPointsList.append(listElement);
-        debtInfoArrays.push([principal, interest, mmp]);
-    } else {
-        window.alert("Max Debts is 5!");
-        return;
-    }
-}
-
-function testItems() 
-{
-    console.log(debtBulletPointsList);
-    for(const [item1, item2, item3] of debtInfoArrays)
-    {
-        console.log(`Principal: ${item1} Interest: ${item2} MMP: ${item3}`);
-    }
+    advancedForm.style.display = "block";
 }
 
 function takeHomePay() 
@@ -90,7 +46,7 @@ function takeHomePay()
         } else if(incomeBeforeTax <= 0 || (salaryTimeOption === "Hour" && workHours <= 0)) {
             throw "Please enter positive numbers in the textboxes!";
         }
-        reset();
+
     } catch (e) {
         window.alert(e);
         return;

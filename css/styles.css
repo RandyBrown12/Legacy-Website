@@ -36,7 +36,6 @@
     --BUTTON-TEXT-COLOR: #E7E7E7;
     --FORM-BORDER-RADIUS: 15px;
     --FORM-BORDER: 5px var(--BORDER-STYLE) var(--BORDER-COLOR);
-    --HR-BORDER: 3px var(--BORDER-STYLE) var(--BORDER-COLOR);
     --INPUT-BORDER: 1px var(--BORDER-STYLE) var(--BORDER-COLOR);
 
     /* SIZE */
@@ -50,7 +49,6 @@
                       var(--BUTTON-PADDING-TOP-AND-BOTTOM) var(--BUTTON-PADDING-LEFT-AND-RIGHT);
     --CANVAS-CENTER-SIZE: 85%;
     --FORM-MAX-SIZE: 85%;
-    --FORM-WIDTH-SMALL-SIZE: 20%;
     --FORM-WIDTH-SIZE: 50%;
     --HEADER-ICON-GAP: 1.7em;
     --HEADER-ICON-MARGIN: -0.7em;
@@ -198,10 +196,6 @@ main {
     width: var(--FORM-WIDTH-SIZE);
 }
 
-.center__small {
-    margin: auto;
-    width: var(--FORM-WIDTH-SMALL-SIZE);
-}
 .canvas__center {
     margin: auto;
     width: var(--CANVAS-CENTER-SIZE);
@@ -217,7 +211,7 @@ main {
     margin-top: var(--HEIGHT-SPACING);
 }
 
-.spacing__large {
+.large__spacing {
     margin-bottom: var(--LARGE-HEIGHT-SPACING);
     margin-top: var(--LARGE-HEIGHT-SPACING);
 }
@@ -230,16 +224,6 @@ main {
     display: none;
 }
 
-.border {
-    border: var(--HR-BORDER);
-}
-
-.removeBulletPointIcons {
-    list-style-position: inside;
-}
-.removeBulletPointIcons li::marker {
-    content: "❌";
-}
 /* Media Query for small phone */
 /* Outside of min width */
 @media screen and (min-width: 670px) {
