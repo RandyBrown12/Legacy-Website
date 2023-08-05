@@ -27,7 +27,8 @@ const debtBulletPointsList = document.getElementById("debtInfo");
 /* let debtBulletPointsList = debtInfoList.getElementsByTagName("li"); */
 
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
-const debtInfoArrays = [];
+const debtsHashMap = new Map([[0, null],[1, null],[2, null],[3, null],[4, null]]);
+const deletionOrder = [];
 let debtCount = 0;
 // Events
 computeButton.addEventListener("click", takeHomePay);
@@ -48,7 +49,7 @@ function addForm(form)
     form.style.display = "block";
 }
 
-let count = 1;
+let count = 0;
 function addDebtToList() {
     let principal = parseFloat(principalInput.value), interest = parseFloat(interestInput.value), mmp = parseFloat(mMPInput.value);
     try {
@@ -61,19 +62,28 @@ function addDebtToList() {
         return;
     }
     
-    if(debtBulletPointsList.childNodes.length <= 5) {
+    if(debtBulletPointsList.childNodes.length <= 5) 
+    {
+        count = debtBulletPointsList.childNodes.length - 1;
+        let selectNum = 0;
+        if(deletionOrder.length >= 1 || deletionOrder.length == 5) {
+            selectNum = deletionOrder[0];
+            deletionOrder.shift();
+        } else {
+            selectNum = count;
+        }
+
         let listElement = document.createElement("li");
         listElement.textContent = `Principal: ${principal} Interest: ${interest} MMP: ${mmp}`;
-/*         debtInfoList.innerHTML += "<li> Debt " + (debtBulletPointsList.length + 1) + 
-        ": Principal: " + principal + " Interest: " + interest + " MMP: " + mmp + "</li>"; */
         listElement.addEventListener('click', function () {
             window.alert('Clicked on: ' + listElement.innerText);
-            debtInfoArrays.splice(debtBulletPointsList.childNodes.length, 1);
+            debtsHashMap.set(selectNum, null);
+            deletionOrder.push(selectNum);
             listElement.parentNode.removeChild(listElement);
             listElement = null;
         });
         debtBulletPointsList.append(listElement);
-        debtInfoArrays.push([principal, interest, mmp]);
+        debtsHashMap.set(selectNum, [principal, interest, mmp]);
     } else {
         window.alert("Max Debts is 5!");
         return;
@@ -82,10 +92,21 @@ function addDebtToList() {
 
 function testItems() 
 {
-    console.log(debtBulletPointsList);
-    for(const [item1, item2, item3] of debtInfoArrays)
+    let sorted = Array.from(debtsHashMap);
+    for(let i = sorted.length - 1; i >= 0; i--)
     {
-        console.log(`Principal: ${item1} Interest: ${item2} MMP: ${item3}`);
+        if(sorted[i][1] === null) {
+            sorted.splice(i, 1);
+        }
+    }
+    sorted.sort(function(a, b) {return a[1][2] - b[1][2];});
+    console.log("After Sort: ");
+    for(const [key, valueCheck] of sorted)
+    {
+        if(valueCheck != null) {
+            let item1 = valueCheck[0], item2 = valueCheck[1], item3 = valueCheck[2];
+            console.log(`Key: ${key} Principal: ${item1} Interest: ${item2} MMP: ${item3}`);
+        }
     }
 }
 
