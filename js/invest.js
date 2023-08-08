@@ -28,6 +28,7 @@ const lineChartCanvas = document.getElementById("lineChart");
 const conversionRatiosToYear = new Map([["Week", 52.1429], ["Biweek", 26.07145], ["Semimonth", 24], ["Month", 12], ["Year", 1]]);
 const debtsHashMap = new Map([[0, null],[1, null],[2, null],[3, null],[4, null]]);
 const deletionOrder = [];
+const debtCount = 5;
 let count = 0;
 let lineChart = null, donutChart = null;
 // Events
@@ -37,7 +38,7 @@ advancedFormButton.addEventListener("click", function() { addForm(advancedForm) 
 optionBox.addEventListener("change", selectedOption);
 isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
 addDebtButton.addEventListener("click", function() { addDebtToList(count) });
-testButton.addEventListener("click", createLineChart);
+testButton.addEventListener("click", function() { createLineChart(5) });
 
 function addForm(form) 
 {
@@ -61,11 +62,11 @@ function addDebtToList(count) {
         return;
     }
     
-    if(debtBulletPointsList.childNodes.length <= 5) 
+    if(debtBulletPointsList.childNodes.length <= debtCount) 
     {
         count = debtBulletPointsList.childNodes.length - 1;
         let selectNum = 0;
-        if(deletionOrder.length >= 1 || deletionOrder.length == 5) {
+        if(deletionOrder.length >= 1 || deletionOrder.length == debtCount) {
             selectNum = deletionOrder[0];
             deletionOrder.shift();
         } else {
@@ -139,45 +140,58 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
       donutChartCanvas.style.display = 'block';
 }
 
-function createLineChart() 
+function createLineChart(givenIncome) 
 {
-    let arrayHashMap = Array.from(debtsHashMap);
-    for(var i = arrayHashMap.length - 1; i >= 0; i--)
-    {
-        if(arrayHashMap[i][1] === null) {
-            arrayHashMap.splice(i, 1);
-        }
-    }
-    arrayHashMap.sort(function(a, b) {return a[1][2] - b[1][2];});
-    console.log("After Sort: ");
-    for(const [key, valueCheck] of arrayHashMap)
-    {
-        if(valueCheck != null) {
-            let item1 = valueCheck[0], item2 = valueCheck[1], item3 = valueCheck[2];
-            console.log(`Key: ${key} Principal: ${item1} Interest: ${item2} MMP: ${item3}`);
-        }
-    }
+    const copyMap = JSON.parse(JSON.stringify(Array.from(debtsHashMap)));
 
     checkIfExists(lineChart);
-    let date = new Date()
-    const list = [];
-    for(var i = 0; i < 6; i++) {
-        list.push(new Intl.DateTimeFormat("en-US",{year: 'numeric', month:"long"}).format(date));
-        date.setMonth(date.getMonth() + 1);
+    let debtsList = Array.from(copyMap);
+    for(var i = debtsList.length - 1; i >= 0; i--)
+    {
+        if(debtsList[i][1] === null) {
+            debtsList.splice(i, 1);
+        }
     }
+    debtsList.sort(function(a, b) {return a[1][2] - b[1][2];});
+    // Perform calculations
+    givenIncome /= 12;
+    givenIncome = givenIncome.toFixed(2);
+
+    let date = new Date();
+    const dateAndDebtsSumList = [[],[]];
+    let getDebtArray = [];
+    let listCount = 0;
+    while(listCount <= 3) {
+        for(var i = 0; i < debtsList.length; i++) {
+            getDebtArray = debtsList[i][1]
+            if(i === 0)
+            {
+                dateAndDebtsSumList[1].push(getDebtArray[0]);
+                continue;
+            }
+            dateAndDebtsSumList[1][listCount] += getDebtArray[0];
+        }
+
+        dateAndDebtsSumList[0].push(new Intl.DateTimeFormat("en-US",{year: 'numeric', month:"long"}).format(date));
+        date.setMonth(date.getMonth() + 1);
+
+        debtsList[0][1][0] -= givenIncome;
+        listCount += 1;
+    }
+
     lineChart = new Chart(lineChartCanvas, {
         type: 'line',
         data: {
-            labels: list,
+            labels: dateAndDebtsSumList[0],
             datasets: [{
                 label: 'Test Data',
-                data: [12, 19, 3, 5, 2, 3],
+                data: dateAndDebtsSumList[1],
                 borderColor: 'rgb(255, 0, 0)',
                 borderWidth: 1,
                 fill: false
-            }]
-        },
-    })
+                }]
+            },
+        })
 }
 
 function takeHomePay() 
@@ -224,6 +238,10 @@ function takeHomePay()
     let allTaxes = [federalTaxedIncome, stateTaxedIncome, ficaTaxedIncome, incomeAfterTax];
     
     createDonutChart(allTaxes, incomeBeforeTax);
+    if(count == 0) {
+        window.alert("No Debts are listed!");
+        return;
+    }
     createLineChart(incomeAfterTax);
 }
 
