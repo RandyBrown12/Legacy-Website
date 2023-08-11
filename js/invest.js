@@ -38,7 +38,7 @@ advancedFormButton.addEventListener("click", function() { addForm(advancedForm) 
 optionBox.addEventListener("change", selectedOption);
 isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
 addDebtButton.addEventListener("click", function() { addDebtToList(count) });
-testButton.addEventListener("click", function() { createLineChart(5) });
+testButton.addEventListener("click", function() { createLineChart(100) });
 
 function addForm(form) 
 {
@@ -145,38 +145,70 @@ function createLineChart(givenIncome)
     const copyMap = JSON.parse(JSON.stringify(Array.from(debtsHashMap)));
 
     checkIfExists(lineChart);
-    let debtsList = Array.from(copyMap);
-    for(var i = debtsList.length - 1; i >= 0; i--)
+    let currentDebts = Array.from(copyMap);
+    for(var i = currentDebts.length - 1; i >= 0; i--)
     {
-        if(debtsList[i][1] === null) {
-            debtsList.splice(i, 1);
+        if(currentDebts[i][1] === null) {
+            currentDebts.splice(i, 1);
         }
     }
-    debtsList.sort(function(a, b) {return a[1][2] - b[1][2];});
+
+    //[Key, [Princ,Interest,MMP]]
+    currentDebts.sort(function(a, b) {return a[1][2] - b[1][2];});
+
     // Perform calculations
     givenIncome /= 12;
     givenIncome = givenIncome.toFixed(2);
-
     let date = new Date();
     const dateAndDebtsSumList = [[],[]];
     let getDebtArray = [];
-    let listCount = 0;
-    while(listCount <= 3) {
-        for(var i = 0; i < debtsList.length; i++) {
-            getDebtArray = debtsList[i][1]
-            if(i === 0)
+    let sum = 0;
+    let debtDataPoint = 0;
+    while(currentDebts.length !== 0 && dateAndDebtsSumList[1].length < 100)
+    {
+        sum = 0;
+        for(var i = 0; i < currentDebts.length; i++) 
+        {
+            getDebtArray = currentDebts[i][1];
+            sum += getDebtArray[0];
+        }
+
+        sum = Number(sum.toFixed(2));
+        //[ [0,[1,1,1]], [1,[3,3,3]], ...]
+        currentDebts[0][1][0] -= givenIncome;
+        currentDebts[0][1][0] = Number(currentDebts[0][1][0].toFixed(2));
+        if(currentDebts[0][1][0] <= 0)
+        {
+            if(currentDebts.length >= 2)
             {
-                dateAndDebtsSumList[1].push(getDebtArray[0]);
-                continue;
+                currentDebts[1][1][0] -= Math.abs(currentDebts[0][1][0]);
+                currentDebts[1][1][0] = Number(currentDebts[1][1][0].toFixed(2));
             }
-            dateAndDebtsSumList[1][listCount] += getDebtArray[0];
+            currentDebts.shift();
         }
 
         dateAndDebtsSumList[0].push(new Intl.DateTimeFormat("en-US",{year: 'numeric', month:"long"}).format(date));
         date.setMonth(date.getMonth() + 1);
+        dateAndDebtsSumList[1].push(sum);
 
-        debtsList[0][1][0] -= givenIncome;
-        listCount += 1;
+        for(var i = 0; i < currentDebts.length; i++) 
+        {
+            getDebtArray = currentDebts[i][1];
+            getDebtArray[0] = getDebtArray[0] * getDebtArray[1];
+            getDebtArray[0] = Number(getDebtArray[0].toFixed(2));
+        }
+
+        //Last point
+        if(currentDebts.length === 0) 
+        {
+            dateAndDebtsSumList[0].push(new Intl.DateTimeFormat("en-US",{year: 'numeric', month:"long"}).format(date));
+            dateAndDebtsSumList[1].push(0.00);
+        } 
+    }
+
+    if(dateAndDebtsSumList[1].length >= 100) {
+        window.alert("Can't pay off debts!");
+        return;
     }
 
     lineChart = new Chart(lineChartCanvas, {
