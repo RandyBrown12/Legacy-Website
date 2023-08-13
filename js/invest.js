@@ -38,7 +38,7 @@ advancedFormButton.addEventListener("click", function() { addForm(advancedForm) 
 optionBox.addEventListener("change", selectedOption);
 isDebtCalculatorForm.addEventListener("change", function() { addForm(debtCalculatorForm) });
 addDebtButton.addEventListener("click", function() { addDebtToList(count) });
-testButton.addEventListener("click", function() { createLineChart(100) });
+testButton.addEventListener("click", function() { createLineChart(168) });
 
 function addForm(form) 
 {
@@ -83,7 +83,7 @@ function addDebtToList(count) {
             listElement = null;
         });
         debtBulletPointsList.append(listElement);
-        debtsHashMap.set(selectNum, [principal, interest, mmp]);
+        debtsHashMap.set(selectNum, [principal, interest, mmp, 0.00]);
     } else {
         window.alert("Max Debts is 5!");
         return;
@@ -142,72 +142,91 @@ function createDonutChart(allTaxes, incomeBeforeTax) {
 
 function createLineChart(givenIncome) 
 {
-    const copyMap = JSON.parse(JSON.stringify(Array.from(debtsHashMap)));
 
+    let currentDebts = removeNullFromArray(JSON.parse(JSON.stringify(Array.from(debtsHashMap.values()))));
     checkIfExists(lineChart);
-    let currentDebts = Array.from(copyMap);
-    for(var i = currentDebts.length - 1; i >= 0; i--)
-    {
-        if(currentDebts[i][1] === null) {
-            currentDebts.splice(i, 1);
-        }
-    }
 
-    //[Key, [Princ,Interest,MMP]]
-    currentDebts.sort(function(a, b) {return a[1][2] - b[1][2];});
+    currentDebts.sort(function(a, b) {return a[2] - b[2];});
 
     // Perform calculations
     givenIncome /= 12;
-    givenIncome = givenIncome.toFixed(2);
+    givenIncome = Number(givenIncome.toFixed(2));
+
     let date = new Date();
     const dateAndDebtsSumList = [[],[]];
-    let getDebtArray = [];
-    let sum = 0;
-    let debtDataPoint = 0;
-    while(currentDebts.length !== 0 && dateAndDebtsSumList[1].length < 100)
+    let extraMoney = 0, debtsSum = 0;
+    try 
     {
-        sum = 0;
-        for(var i = 0; i < currentDebts.length; i++) 
+        while(currentDebts.length !== 0)
         {
-            getDebtArray = currentDebts[i][1];
-            sum += getDebtArray[0];
-        }
+            extraMoney = givenIncome;
+            debtsSum = 0;
 
-        sum = Number(sum.toFixed(2));
-        //[ [0,[1,1,1]], [1,[3,3,3]], ...]
-        currentDebts[0][1][0] -= givenIncome;
-        currentDebts[0][1][0] = Number(currentDebts[0][1][0].toFixed(2));
-        if(currentDebts[0][1][0] <= 0)
-        {
-            if(currentDebts.length >= 2)
+            //Pay off minimums and then pay off interest.
+            for(const [principal, interestRate, mmp, interest] of currentDebts)
             {
-                currentDebts[1][1][0] -= Math.abs(currentDebts[0][1][0]);
-                currentDebts[1][1][0] = Number(currentDebts[1][1][0].toFixed(2));
+                extraMoney -= mmp
+                debtsSum += principal;
             }
+
+            //Flag
+            if(extraMoney < 0) {
+                throw "Can't pay off minimum payments!";
+            }
+
+            extraMoney = Number(extraMoney.toFixed(2));
+            debtsSum = Number(debtsSum.toFixed(2));
+
+            //Use extra money toward the principal of first debt
+            if(currentDebts[0][3] > 0.00) 
+            {
+                currentDebts[0][3] -= extraMoney;
+                currentDebts[0][3] = Number(currentDebts[0][3].toFixed(2))
+                if(currentDebts[0][3] <= 0.00) 
+                {
+                    currentDebts[0][0] -= Math.abs(currentDebts[0][3]);
+                    currentDebts[0][3] = 0.00
+                }
+            } else {
+                currentDebts[0][0] -= extraMoney;
+            }
+            currentDebts[0][0] = Number(currentDebts[0][0].toFixed(2));
+
+            while(currentDebts.length != 0 && currentDebts[0][0] <= 0.00)
+            {
+                if(currentDebts.length >= 2)
+                {
+                    currentDebts[1][0] -= Math.abs(currentDebts[0][0]);
+                    currentDebts[1][0] = Number(currentDebts[1][0].toFixed(2));
+                }
             currentDebts.shift();
-        }
+            }
 
-        dateAndDebtsSumList[0].push(new Intl.DateTimeFormat("en-US",{year: 'numeric', month:"long"}).format(date));
-        date.setMonth(date.getMonth() + 1);
-        dateAndDebtsSumList[1].push(sum);
-
-        for(var i = 0; i < currentDebts.length; i++) 
-        {
-            getDebtArray = currentDebts[i][1];
-            getDebtArray[0] = getDebtArray[0] * getDebtArray[1];
-            getDebtArray[0] = Number(getDebtArray[0].toFixed(2));
-        }
-
-        //Last point
-        if(currentDebts.length === 0) 
-        {
             dateAndDebtsSumList[0].push(new Intl.DateTimeFormat("en-US",{year: 'numeric', month:"long"}).format(date));
-            dateAndDebtsSumList[1].push(0.00);
-        } 
-    }
+            date.setMonth(date.getMonth() + 1);
+            dateAndDebtsSumList[1].push(debtsSum);
+            
+            //Add interest toward debts using simple.
+            for(var i = 0; i < currentDebts.length; i++) 
+            {
+                currentDebts[i][3] = currentDebts[i][0] * currentDebts[i][1] * (1/12);
+                currentDebts[i][3] = Number(currentDebts[i][3].toFixed(2));
+            }
 
-    if(dateAndDebtsSumList[1].length >= 100) {
-        window.alert("Can't pay off debts!");
+            //Last point
+            if(currentDebts.length === 0) 
+            {
+                dateAndDebtsSumList[0].push(new Intl.DateTimeFormat("en-US",{year: 'numeric', month:"long"}).format(date));
+                dateAndDebtsSumList[1].push(0.00);
+            }
+
+            //Flag
+            if(dateAndDebtsSumList[1].length >= 100) {
+                throw "Can't pay off debts!";
+            }
+        }
+    } catch(e) {
+        window.alert(e);
         return;
     }
 
@@ -223,6 +242,16 @@ function createLineChart(givenIncome)
                 fill: false
                 }]
             },
+            options: {
+                plugins: {
+                    datalabels: {
+                        align: 'top',
+                        font: {
+                            size: 15,
+                        }
+                    }
+                }
+            }
         })
 }
 
@@ -292,4 +321,15 @@ function reset() {
     advancedForm.style.display = afterCalculationInfo.style.display = afterCalculationForm.style.display = "none";
     checkIfExists(donutChart);
     checkIfExists(lineChart);
+}
+
+const removeNullFromArray = (array) => {
+    let currentDebts = [];
+    for(var i = 0; i < array.length; i++)
+    {
+        if(array[i] !== null) {
+            currentDebts.push(array[i]);
+        }
+    }
+    return currentDebts;
 }
